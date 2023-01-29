@@ -17,36 +17,31 @@ const connectDB = async () => {
   mongo = await MongoMemoryServer.create();
   const uri = mongo.getUri();
 
+  mongoose.set("strictQuery", true);
+
   mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
 };
 
-const dropDB = async () => {
-  if (mongo) {
-    await mongoose.connection.dropDatabase(),
-      await mongoose.connection.close(),
-      await mongo.stop();
-  }
-};
-
 describe("API Tests", function () {
-  before(async () => {
+  before(async function () {
     await connectDB();
     await Charity.deleteMany({});
   });
 
-  after(async () => {
+  after(async function () {
     await mongoose.disconnect();
     await mongo.stop();
   });
 
   describe("Charities", function () {
     describe("/api/charity", function () {
-      beforeEach((done) => {
-        Charity.deleteMany({});
-        done();
+      // Delete all the data and add in a single Bob
+      beforeEach(async function () {
+        await Charity.deleteMany({});
+        await Charity.create(TEST_DATA[3]);
       });
 
       it("Should be able to add a single Charity", (done) => {
@@ -57,10 +52,31 @@ describe("API Tests", function () {
           .end(function (err, res) {
             if (err) throw err;
 
-            expect(res.body.description).to.be.eql("charity created");
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("charity created");
 
-            const checkDb = Charity.find({ ...TEST_DATA[0] });
-            expect(checkDb).to.not.be.eql(null);
+            done();
+          });
+      });
+
+      it("Should be able to get a list of all Charities", (done) => {
+        request(app)
+          .get("/api/charity")
+          .send({})
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("all charities in database");
+
+            expect(res.body)
+              .to.have.property("charities")
+              .to.have.property("length")
+              .to.be.eql(1);
+
             done();
           });
       });

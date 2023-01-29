@@ -11,8 +11,6 @@ app.use(express.json());
 const live_db_string =
   "mongodb+srv://callum001:VgNxBSoA0dQFnA9K@cluster0.uffmeex.mongodb.net/?retryWrites=true&w=majority";
 
-mongoose.set("strictQuery", true);
-
 if (process.env.NODE_ENV !== "test") {
   mongoose
     .connect(live_db_string, {
@@ -34,6 +32,23 @@ app.post("/api/charity", async (req, res) => {
     res.status(201).json({
       status: "Success",
       description: "charity created",
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err,
+    });
+  }
+});
+
+app.get("/api/charity", async (req, res) => {
+  const charities = await Charity.find({});
+  try {
+    console.log(charities);
+    res.status(200).json({
+      status: "Success",
+      description: "all charities in database",
+      charities,
     });
   } catch (err) {
     res.status(500).json({

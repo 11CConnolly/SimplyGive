@@ -1,4 +1,4 @@
-const categories = require("../models/categories");
+const { categories } = require("../models/categories");
 
 const TEST_DATA = [
   {

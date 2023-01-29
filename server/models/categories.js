@@ -8,4 +8,6 @@ const categories = {
   CULTURAL: "cultural",
 };
 
-module.exports = categories;
+const categoriesArray = Object.values(categories);
+
+module.exports = { categories, categoriesArray };

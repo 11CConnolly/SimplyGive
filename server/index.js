@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Charity = require("./models/charity");
+const { categoriesArray } = require("./models/categories");
 
 const app = express();
 
@@ -54,6 +55,24 @@ app.get("/api/charity", async (req, res) => {
     res.status(200).json({
       status: "Success",
       description: "all charities in database",
+      charities,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err,
+    });
+  }
+});
+
+app.get("/api/charity/findByCategory", async (req, res) => {
+  const charities = await Charity.find({
+    categories: { $in: req.body.categories },
+  });
+  try {
+    res.status(200).json({
+      status: "Success",
+      description: "Successful operation",
       charities,
     });
   } catch (err) {

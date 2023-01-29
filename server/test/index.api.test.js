@@ -9,6 +9,7 @@ const app = require("../index");
 
 // Import our schemas
 const Charity = require("../models/charity");
+const { categories } = require("../models/categories");
 
 // Mock our DB connection
 let mongo = null;
@@ -41,6 +42,8 @@ describe("API Tests", function () {
       // Delete all the data and add in a single Bob
       beforeEach(async function () {
         await Charity.deleteMany({});
+        await Charity.create(TEST_DATA[1]);
+        await Charity.create(TEST_DATA[2]);
         await Charity.create(TEST_DATA[3]);
       });
 
@@ -76,6 +79,17 @@ describe("API Tests", function () {
           });
       });
 
+      it("Should be return an error when trying to save the same charity", (done) => {
+        request(app)
+          .post("/api/charity")
+          .send(TEST_DATA[3])
+          .expect(500)
+          .end(function (err, res) {
+            if (err) throw err;
+            done();
+          });
+      });
+
       it("Should be able to get a list of all Charities", (done) => {
         request(app)
           .get("/api/charity")
@@ -91,7 +105,32 @@ describe("API Tests", function () {
             expect(res.body)
               .to.have.property("charities")
               .to.have.property("length")
-              .to.be.eql(1);
+              .to.be.eql(3);
+
+            done();
+          });
+      });
+
+      it("Should be able to get a list of all Charities by category", (done) => {
+        request(app)
+          .get("/api/charity/findByCategory")
+          .send({
+            categories: [categories.ANIMAL],
+          })
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            console.log(res.body.charities);
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Successful operation");
+
+            expect(res.body)
+              .to.have.property("charities")
+              .to.have.property("length")
+              .to.be.eql(2);
 
             done();
           });

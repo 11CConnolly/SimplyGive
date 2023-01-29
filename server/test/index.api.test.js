@@ -60,6 +60,22 @@ describe("API Tests", function () {
           });
       });
 
+      it("Should be return an Bad Request with an improper input", (done) => {
+        request(app)
+          .post("/api/charity")
+          .send({ invalid: "property" })
+          .expect(400)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("invalid input, object invalid");
+
+            done();
+          });
+      });
+
       it("Should be able to get a list of all Charities", (done) => {
         request(app)
           .get("/api/charity")

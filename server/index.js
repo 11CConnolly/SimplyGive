@@ -34,17 +34,23 @@ app.post("/api/charity", async (req, res) => {
       description: "charity created",
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err,
-    });
+    if (err.name === "ValidationError") {
+      res.status(400).json({
+        status: "Failed",
+        description: "invalid input, object invalid",
+      });
+    } else {
+      res.status(500).json({
+        status: "Failed",
+        message: err,
+      });
+    }
   }
 });
 
 app.get("/api/charity", async (req, res) => {
   const charities = await Charity.find({});
   try {
-    console.log(charities);
     res.status(200).json({
       status: "Success",
       description: "all charities in database",

@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const categories = require("./categories");
+
+const categoriesArray = Object.keys(categories);
 
 const charitySchema = new mongoose.Schema({
   name: {
@@ -11,6 +14,10 @@ const charitySchema = new mongoose.Schema({
   },
   description: {
     type: String,
+  },
+  categories: {
+    type: categoriesArray,
+    required: true,
   },
 });
 

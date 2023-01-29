@@ -1,0 +1,31 @@
+TDD Principles
+Red-Green-Refactoring
+
+🔴 Write a test which asserts some functionality of your software.
+🟢 Write just enough code that your program is able to pass the test case. Keep it WET.
+♻️ Refactor the code, e.g., applying DRY Principles. Don't abstract into an pattern too early, however.
+
+TESTING PRINCIPLES
+1. Tests define the specification of the application we are building. Because of this, unit, system, and integration tests should
+test for functionality that should exist in an application, not just asserting its correctness. If it doesn't test something
+useful and important, it shouldn't be written.
+
+2. Pesticide paradox
+Eventually, the tests will become a bigger problem than the defects you are trying to find.
+If you run the same tests again and again, you'll likely have false confidence in your software.
+If the tests you've written are brittle and not mocked properly, you'll spend more time fixing broken
+test cases than making useful progress.
+
+3. TYPES OF TEST CASES
+FUNCTIONALITY - Tests the correct functionality of the application.
+UNIT - Tests different levels and combinations of services in an application
+INTEGRATION - 
+SYSTEM / E2E - 
+BOUNDARY - Allows you to understand the boundary of correct and incorrect behaviour
+ERRONEOUS - When things go wrong, it's handlded correctly. Also useful for detecting defects and bugs that exist outside scope.
+STRESS - 
+PERFORMANCE - 
+SECURITY - 
+
+
+https://www.functionize.com/blog/7-principles-of-software-testing

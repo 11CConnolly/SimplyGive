@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const Charity = require("./models/charity");
 const { categoriesArray } = require("./models/categories");
 
@@ -7,10 +8,13 @@ const app = express();
 
 // Define the middleware for accepting requests
 app.use(express.json());
+app.use(cors());
 
 // Connect to DB
 const live_db_string =
   "mongodb+srv://callum001:VgNxBSoA0dQFnA9K@cluster0.uffmeex.mongodb.net/?retryWrites=true&w=majority";
+
+mongoose.set("strictQuery", true);
 
 if (process.env.NODE_ENV !== "test") {
   mongoose
@@ -27,6 +31,7 @@ const save = async (params) => {
 };
 
 // Define our API logic
+// TODO refactor to routes api
 app.post("/api/charity", async (req, res) => {
   try {
     await save(req.body);
@@ -65,7 +70,7 @@ app.get("/api/charity", async (req, res) => {
   }
 });
 
-app.get("/api/charity/findByCategory", async (req, res) => {
+app.post("/api/charity/findByCategory", async (req, res) => {
   const charities = await Charity.find({
     categories: { $in: req.body.categories },
   });
@@ -74,6 +79,25 @@ app.get("/api/charity/findByCategory", async (req, res) => {
       status: "Success",
       description: "Successful operation",
       charities,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err,
+    });
+  }
+});
+
+app.post("/api/charity/findSingleByCategory", async (req, res) => {
+  const charities = await Charity.find({
+    categories: { $in: req.body.categories },
+  });
+  const charity = charities[Math.floor(Math.random() * charities.length)];
+  try {
+    res.status(200).json({
+      status: "Success",
+      description: "Successful operation",
+      charity,
     });
   } catch (err) {
     res.status(500).json({

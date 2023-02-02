@@ -111,17 +111,15 @@ describe("API Tests", function () {
           });
       });
 
-      it("Should be able to get a list of all Charities by category", (done) => {
+      it("Should be able to get a list of all Charities by single category", (done) => {
         request(app)
-          .get("/api/charity/findByCategory")
+          .post("/api/charity/findByCategory")
           .send({
             categories: [categories.ANIMAL],
           })
           .expect(200)
           .end(function (err, res) {
             if (err) throw err;
-
-            console.log(res.body.charities);
 
             expect(res.body)
               .to.have.property("description")
@@ -131,6 +129,49 @@ describe("API Tests", function () {
               .to.have.property("charities")
               .to.have.property("length")
               .to.be.eql(2);
+
+            done();
+          });
+      });
+
+      it("Should be able to get a list of all Charities by multiple categories", (done) => {
+        request(app)
+          .post("/api/charity/findByCategory")
+          .send({
+            categories: [categories.ANIMAL, categories.WELFARE],
+          })
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Successful operation");
+
+            expect(res.body)
+              .to.have.property("charities")
+              .to.have.property("length")
+              .to.be.eql(3);
+
+            done();
+          });
+      });
+
+      it("Should be able to get a list single charity from a list of categories", (done) => {
+        request(app)
+          .post("/api/charity/findSingleByCategory")
+          .send({
+            categories: [categories.ANIMAL, categories.WELFARE],
+          })
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Successful operation");
+
+            expect(res.body).to.have.property("charity");
 
             done();
           });

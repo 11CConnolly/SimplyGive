@@ -5,15 +5,10 @@ import {
   Checkbox,
   Stack,
   Text,
-  HStack,
-  VStask,
-  CheckboxGroup,
   Button,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
 } from "@chakra-ui/react";
 
 const currency = "£";
@@ -22,7 +17,7 @@ const parse = (val) => val.replace(/^\£/, "");
 
 let config = {
   headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
+    "Content-Type": "application/json",
   },
 };
 
@@ -43,30 +38,25 @@ function App() {
       ? setCheckedItems(checkedItems.filter((x) => x !== checkboxString))
       : setCheckedItems(checkedItems.concat(checkboxString));
 
-  const click = async () => {
-    console.log({ categories: checkedItems });
-    const charity = await getCharityFromSelection();
-    alert(`Your subscription will be ${currency}${amount} to ${charity}`);
+  const click = () => {
+    getCharityFromSelection().then((res) =>
+      alert(
+        `You have set up a payment of ${currency}${amount} to go to ${res.name}`
+      )
+    );
   };
 
-  // TODO UPDATE SWAGGER DOCS
   const getCharityFromSelection = async () => {
-    axios
+    return axios
       .post(
-        "http://localhost:8080/api/charity/findByCategory",
+        "http://localhost:8080/api/charity/findSingleByCategory",
         {
           categories: checkedItems,
         },
         config
       )
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      });
+      .then((res) => res.data.charity)
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -101,7 +91,11 @@ function App() {
           <NumberInputField />
           <NumberInputStepper></NumberInputStepper>
         </NumberInput>
-        <Button className="OkButton" colorScheme="orange" onClick={click}>
+        <Button
+          className="OkButton"
+          colorScheme="orange"
+          onClick={() => click()}
+        >
           OK
         </Button>
       </header>

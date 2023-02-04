@@ -18,14 +18,14 @@ test cases than making useful progress.
 
 3. TYPES OF TEST CASES
 FUNCTIONALITY - Tests the correct functionality of the application.
-UNIT - Tests different levels and combinations of services in an application
-INTEGRATION - 
-SYSTEM / E2E - 
+UNIT - Tests atomic, individual components of different parts of an application.
+INTEGRATION - Tests combination of services in an application working together e.g. Backend & Database.
+SYSTEM / E2E - Testing the entire service working as a whole e.g. from the point of a user making a request, and expecting feedback
 BOUNDARY - Allows you to understand the boundary of correct and incorrect behaviour
 ERRONEOUS - When things go wrong, it's handlded correctly. Also useful for detecting defects and bugs that exist outside scope.
-STRESS - 
-PERFORMANCE - 
-SECURITY - 
+STRESS - Testing a system with deliberatly intense tests in terms of volume, processing, load, to determine the stability of a given system
+PERFORMANCE - Tests which measure some non-functional aspect of the system and that it conforms to those requirementes e.g. timing
+SECURITY - Testing different methods to break a program, exploit points of weakness, or vulnerabilities and ensuring robustness to these attempts.
 
 
 https://www.functionize.com/blog/7-principles-of-software-testing

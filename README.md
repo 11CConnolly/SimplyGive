@@ -1,6 +1,6 @@
 ## SimplyGive
 
-![build passing](https://github.com/11CConnolly/SimplyGive/actions/workflows/node.js.yml/badge.svg)
+![build passing](https://github.com/11CConnolly/SimplyGive/actions/workflows/node.js.yml/badge.svg) [![Netlify Status](https://api.netlify.com/api/v1/badges/3f1be408-11bf-462f-b21e-5c232ec32867/deploy-status)](https://app.netlify.com/sites/luminous-medovik-98387b/deploys)
 
 SimplyGive is a service which makes it easier for you to make the changes you want to see in the world.
 

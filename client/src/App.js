@@ -1,6 +1,4 @@
-import "./App.css";
 import React, { useState } from "react";
-import axios from "axios";
 import {
   Checkbox,
   Stack,
@@ -11,23 +9,9 @@ import {
   NumberInputStepper,
 } from "@chakra-ui/react";
 
-const currency = "£";
-const format = (val) => `${currency}` + val;
-const parse = (val) => val.replace(/^£/, "");
-
-let config = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-};
-
-const categories = {
-  HEALTH: "health",
-  WELFARE: "welfare",
-  ANIMAL: "animal",
-  CRISIS: "crisis",
-  CULTURAL: "cultural",
-};
+import "./App.css";
+import client from "./utils/client";
+import { categories, formatAsGBP, parseAsGBP } from "./utils/constants";
 
 function App() {
   const [checkedItems, setCheckedItems] = React.useState([]);
@@ -38,23 +22,19 @@ function App() {
       ? setCheckedItems(checkedItems.filter((x) => x !== checkboxString))
       : setCheckedItems(checkedItems.concat(checkboxString));
 
-  const click = () => {
+  const buttonClick = () => {
     getCharityFromSelection().then((res) =>
-      alert(
-        `You have set up a payment of ${currency}${amount} to go to ${res.name}`
-      )
+      alert(`You have set up a payment of £${amount} to go to ${res.name}`)
     );
   };
 
+  // @params  - List of categories
+  // @returns - Single charity object
   const getCharityFromSelection = async () => {
-    return axios
-      .post(
-        "http://localhost:8080/api/charity/findSingleByCategory",
-        {
-          categories: checkedItems,
-        },
-        config
-      )
+    return client
+      .post("/api/charity/findSingleByCategory", {
+        categories: checkedItems,
+      })
       .then((res) => res.data.charity)
       .catch((err) => console.log(err));
   };
@@ -85,17 +65,13 @@ function App() {
           defaultValue={5}
           precision={2}
           step={0.01}
-          onChange={(valueString) => setAmount(parse(valueString))}
-          value={format(amount)}
+          onChange={(valueString) => setAmount(parseAsGBP(valueString))}
+          value={formatAsGBP(amount)}
         >
           <NumberInputField />
           <NumberInputStepper></NumberInputStepper>
         </NumberInput>
-        <Button
-          className="OkButton"
-          colorScheme="orange"
-          onClick={() => click()}
-        >
+        <Button className="OkButton" colorScheme="orange" onClick={buttonClick}>
           OK
         </Button>
       </header>

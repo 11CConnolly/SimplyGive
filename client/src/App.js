@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Checkbox,
+  Box,
   Stack,
   Text,
   Button,
@@ -12,6 +13,7 @@ import {
 import "./App.css";
 import client from "./utils/client";
 import { categories, formatAsGBP, parseAsGBP } from "./utils/constants";
+import LinkButton from "./components/LinkButton";
 
 function App() {
   const [checkedItems, setCheckedItems] = React.useState([]);
@@ -40,19 +42,13 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="navbar">
-        <Button colorScheme="teal" variant="outline">
-          Home
-        </Button>
-        <Button colorScheme="teal" variant="outline">
-          Users
-        </Button>
-        <Button colorScheme="teal" variant="outline">
-          Subscriptions
-        </Button>
-      </div>
-      <header className="App-container">
+    <>
+      <Box className="navbar">
+        <LinkButton text="Home" />
+        <LinkButton text="Users" />
+        <LinkButton text="Subscriptions" />
+      </Box>
+      <Box className="App-container">
         <Text>Choose the things that matter most to you</Text>
         <Stack spacing={3} direction="column">
           <Checkbox onChange={() => checkCheckedItem(categories.HEALTH)}>
@@ -85,8 +81,8 @@ function App() {
         <Button className="OkButton" colorScheme="orange" onClick={buttonClick}>
           OK
         </Button>
-      </header>
-    </div>
+      </Box>
+    </>
   );
 }
 

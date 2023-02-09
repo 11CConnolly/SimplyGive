@@ -4,12 +4,27 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./routes/error-page";
+import Users from "./routes/users";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/users/",
+    element: <Users />,
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider>
     <React.StrictMode>
-      <App />
+      <RouterProvider router={router} />
     </React.StrictMode>
   </ChakraProvider>
 );

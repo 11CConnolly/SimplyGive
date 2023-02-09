@@ -1,22 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./routes/error-page";
+
+import Root from "./routes/root";
+import Main from "./routes/main";
 import Users from "./routes/users";
+import Subscriptions from "./routes/subscriptions";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Root />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "/users/",
-    element: <Users />,
+    children: [
+      {
+        index: true,
+        element: <Main />,
+      },
+      {
+        path: "/users",
+        element: <Users />,
+      },
+      {
+        path: "/subscriptions",
+        element: <Subscriptions />,
+      },
+    ],
   },
 ]);
 

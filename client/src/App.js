@@ -41,7 +41,18 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="navbar">
+        <Button colorScheme="teal" variant="outline">
+          Home
+        </Button>
+        <Button colorScheme="teal" variant="outline">
+          Users
+        </Button>
+        <Button colorScheme="teal" variant="outline">
+          Subscriptions
+        </Button>
+      </div>
+      <header className="App-container">
         <Text>Choose the things that matter most to you</Text>
         <Stack spacing={3} direction="column">
           <Checkbox onChange={() => checkCheckedItem(categories.HEALTH)}>

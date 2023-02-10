@@ -1,7 +1,11 @@
 const expect = require("chai").expect;
 const request = require("supertest");
 const mongoose = require("mongoose");
-const { CHARITIES_TEST_DATA, USERS_TEST_DATA } = require("./test_data");
+const {
+  CHARITIES_TEST_DATA,
+  USERS_TEST_DATA,
+  SUBSCRIPTION_TEST_DATA,
+} = require("./test_data");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 // Import our app
@@ -37,6 +41,11 @@ describe("API Tests", function () {
   after(async function () {
     await mongoose.disconnect();
     await mongo.stop();
+  });
+
+  afterEach(async function () {
+    await User.deleteMany({});
+    await Charity.deleteMany({});
   });
 
   describe("Charities", function () {
@@ -183,7 +192,6 @@ describe("API Tests", function () {
 
   describe("Users", function () {
     describe("/api/user", function () {
-      // Delete all the data and add in a single Bob
       beforeEach(async function () {
         await User.deleteMany({});
         await User.create(USERS_TEST_DATA[0]);
@@ -253,6 +261,38 @@ describe("API Tests", function () {
               .to.have.property("users")
               .to.have.property("length")
               .to.be.eql(2);
+
+            done();
+          });
+      });
+    });
+  });
+
+  describe("Subscriptions", function () {
+    describe("/api/subscription", function () {
+      // Add some data before for our subscription to be able to reference
+      before(async function () {
+        // Add in a charity and user with Object ID's we can reference
+        await Charity.create(SUBSCRIPTION_TEST_DATA[0].charity);
+        await User.create(SUBSCRIPTION_TEST_DATA[0].user);
+      });
+
+      // Delete all the data and add in a single Bob
+      beforeEach(async function () {
+        await Subscription.deleteMany({});
+      });
+
+      it("Should be able to add a single Subscription", (done) => {
+        request(app)
+          .post("/api/subscription")
+          .send(SUBSCRIPTION_TEST_DATA[0].subscription)
+          .expect(201)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Subscription added");
 
             done();
           });

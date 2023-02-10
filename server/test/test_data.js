@@ -1,6 +1,6 @@
 const { categories } = require("../models/categories");
 
-const TEST_DATA = [
+const CHARITIES_TEST_DATA = [
   {
     name: "BIAS",
     charityNumber: 123456,
@@ -33,4 +33,19 @@ const TEST_DATA = [
   },
 ];
 
-module.exports = TEST_DATA;
+const USERS_TEST_DATA = [
+  {
+    name: "Callum",
+    email: "callumc11@gmail.com",
+  },
+  {
+    name: "Bob",
+    email: "bob@example.com",
+  },
+  {
+    name: "Jim",
+    email: "jim@example.com",
+  },
+];
+
+module.exports = { CHARITIES_TEST_DATA, USERS_TEST_DATA };

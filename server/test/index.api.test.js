@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const request = require("supertest");
 const mongoose = require("mongoose");
-const TEST_DATA = require("./test_data");
+const { CHARITIES_TEST_DATA, USERS_TEST_DATA } = require("./test_data");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 // Import our app
@@ -42,15 +42,15 @@ describe("API Tests", function () {
       // Delete all the data and add in a single Bob
       beforeEach(async function () {
         await Charity.deleteMany({});
-        await Charity.create(TEST_DATA[1]);
-        await Charity.create(TEST_DATA[2]);
-        await Charity.create(TEST_DATA[3]);
+        await Charity.create(CHARITIES_TEST_DATA[1]);
+        await Charity.create(CHARITIES_TEST_DATA[2]);
+        await Charity.create(CHARITIES_TEST_DATA[3]);
       });
 
       it("Should be able to add a single Charity", (done) => {
         request(app)
           .post("/api/charity")
-          .send(TEST_DATA[0])
+          .send(CHARITIES_TEST_DATA[0])
           .expect(201)
           .end(function (err, res) {
             if (err) throw err;
@@ -82,7 +82,7 @@ describe("API Tests", function () {
       it("Should be return an error when trying to save the same charity", (done) => {
         request(app)
           .post("/api/charity")
-          .send(TEST_DATA[3])
+          .send(CHARITIES_TEST_DATA[3])
           .expect(500)
           .end(function (err, res) {
             if (err) throw err;
@@ -172,6 +172,34 @@ describe("API Tests", function () {
               .to.be.eql("Successful operation");
 
             expect(res.body).to.have.property("charity");
+
+            done();
+          });
+      });
+    });
+  });
+
+  describe("Users", function () {
+    describe("/api/user", function () {
+      // Delete all the data and add in a single Bob
+      beforeEach(async function () {
+        await Charity.deleteMany({});
+        await Charity.create(CHARITIES_TEST_DATA[1]);
+        await Charity.create(CHARITIES_TEST_DATA[2]);
+        await Charity.create(CHARITIES_TEST_DATA[3]);
+      });
+
+      it("Should be able to add a single User", (done) => {
+        request(app)
+          .post("/api/user")
+          .send(USERS_TEST_DATA[0])
+          .expect(201)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("User added");
 
             done();
           });

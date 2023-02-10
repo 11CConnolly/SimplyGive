@@ -59,7 +59,7 @@ const SUBSCRIPTION_TEST_DATA = [
     subscription: {
       amount: 5.0,
       createdOn: TODAYS_DATE_IN_YYYY_MM_DD(),
-      dateToTakePaymentOn: DATE_FOR_PAYMENTS,
+      dateToTakePayment: DATE_FOR_PAYMENTS,
       active: true,
     },
   },

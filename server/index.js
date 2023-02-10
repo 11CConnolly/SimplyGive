@@ -49,6 +49,9 @@ app.use("/api/charity", charityRoutes);
 const userRoutes = require("./routes/user");
 app.use("/api/user", userRoutes);
 
+const subscriptionRoutes = require("./routes/subscription");
+app.use("/api/subscription", subscriptionRoutes);
+
 /*
  * Custom error pages to reduce information leakage and enhance security posture
  */

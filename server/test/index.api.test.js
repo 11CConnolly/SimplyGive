@@ -14,6 +14,8 @@ const app = require("../index");
 // Import our schemas
 const Charity = require("../models/charity");
 const User = require("../models/user");
+const Subscription = require("../models/subscription");
+
 const { categories } = require("../models/categories");
 
 // Mock our DB connection
@@ -285,7 +287,11 @@ describe("API Tests", function () {
       it("Should be able to add a single Subscription", (done) => {
         request(app)
           .post("/api/subscription")
-          .send(SUBSCRIPTION_TEST_DATA[0].subscription)
+          .send({
+            charityId: SUBSCRIPTION_TEST_DATA[0].charity.id,
+            userId: SUBSCRIPTION_TEST_DATA[0].user.id,
+            ...SUBSCRIPTION_TEST_DATA[0].subscription,
+          })
           .expect(201)
           .end(function (err, res) {
             if (err) throw err;

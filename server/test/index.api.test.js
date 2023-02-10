@@ -1,7 +1,7 @@
 const expect = require("chai").expect;
 const request = require("supertest");
 const mongoose = require("mongoose");
-const TEST_DATA = require("./test_data");
+const { CHARITIES_TEST_DATA, USERS_TEST_DATA } = require("./test_data");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
 // Import our app
@@ -9,6 +9,7 @@ const app = require("../index");
 
 // Import our schemas
 const Charity = require("../models/charity");
+const User = require("../models/user");
 const { categories } = require("../models/categories");
 
 // Mock our DB connection
@@ -30,6 +31,7 @@ describe("API Tests", function () {
   before(async function () {
     await connectDB();
     await Charity.deleteMany({});
+    await User.deleteMany({});
   });
 
   after(async function () {
@@ -42,15 +44,15 @@ describe("API Tests", function () {
       // Delete all the data and add in a single Bob
       beforeEach(async function () {
         await Charity.deleteMany({});
-        await Charity.create(TEST_DATA[1]);
-        await Charity.create(TEST_DATA[2]);
-        await Charity.create(TEST_DATA[3]);
+        await Charity.create(CHARITIES_TEST_DATA[1]);
+        await Charity.create(CHARITIES_TEST_DATA[2]);
+        await Charity.create(CHARITIES_TEST_DATA[3]);
       });
 
       it("Should be able to add a single Charity", (done) => {
         request(app)
           .post("/api/charity")
-          .send(TEST_DATA[0])
+          .send(CHARITIES_TEST_DATA[0])
           .expect(201)
           .end(function (err, res) {
             if (err) throw err;
@@ -82,7 +84,7 @@ describe("API Tests", function () {
       it("Should be return an error when trying to save the same charity", (done) => {
         request(app)
           .post("/api/charity")
-          .send(TEST_DATA[3])
+          .send(CHARITIES_TEST_DATA[3])
           .expect(500)
           .end(function (err, res) {
             if (err) throw err;
@@ -172,6 +174,85 @@ describe("API Tests", function () {
               .to.be.eql("Successful operation");
 
             expect(res.body).to.have.property("charity");
+
+            done();
+          });
+      });
+    });
+  });
+
+  describe("Users", function () {
+    describe("/api/user", function () {
+      // Delete all the data and add in a single Bob
+      beforeEach(async function () {
+        await User.deleteMany({});
+        await User.create(USERS_TEST_DATA[0]);
+        await User.create(USERS_TEST_DATA[1]);
+      });
+
+      it("Should be able to add a single User", (done) => {
+        request(app)
+          .post("/api/user")
+          .send(USERS_TEST_DATA[2])
+          .expect(201)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("User added");
+
+            done();
+          });
+      });
+
+      it("Should be return a 400 error with an improper request to create a new User", (done) => {
+        request(app)
+          .post("/api/user")
+          .send({})
+          .expect(400)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("invalid input, object invalid");
+
+            done();
+          });
+      });
+
+      it("Should return a 422 error when trying to add the same email", (done) => {
+        request(app)
+          .post("/api/user")
+          .send(USERS_TEST_DATA[0])
+          .expect(422)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("email already in use");
+
+            done();
+          });
+      });
+
+      it("Should return a list of all users", (done) => {
+        request(app)
+          .get("/api/user")
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("all users in database");
+
+            expect(res.body)
+              .to.have.property("users")
+              .to.have.property("length")
+              .to.be.eql(2);
 
             done();
           });

@@ -37,9 +37,17 @@ if (process.env.NODE_ENV !== "test") {
     .then(() => console.log("Connected to Database"));
 }
 
-// Define our API logic
+/*
+ * Define our API logic
+ */
+
+// TODO Make our routes for this use validation or requests with joi - ideally in a consistent way
+
 const charityRoutes = require("./routes/charity");
 app.use("/api/charity", charityRoutes);
+
+const userRoutes = require("./routes/user");
+app.use("/api/user", userRoutes);
 
 /*
  * Custom error pages to reduce information leakage and enhance security posture

@@ -61,7 +61,7 @@ router.get("/", async (req, res) => {
 /**
  * @method POST
  * @access public
- * @endpoint /api/charity/
+ * @endpoint /api/charity/findByCategory
  * @description Gets a list of all the charities in the Database under a certain category
  **/
 router.post("/findByCategory", async (req, res) => {
@@ -85,7 +85,7 @@ router.post("/findByCategory", async (req, res) => {
 /**
  * @method POST
  * @access public
- * @endpoint /api/charity/
+ * @endpoint /api/charity/findSingleByCategory
  * @description Gets a single charity from the list of chosen categories
  **/
 router.post("/findSingleByCategory", async (req, res) => {

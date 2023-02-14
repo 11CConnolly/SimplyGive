@@ -9,6 +9,7 @@ import {
   NumberInputField,
   NumberInputStepper,
 } from "@chakra-ui/react";
+import { SingleDatepicker } from "chakra-dayzed-datepicker";
 
 import client from "../utils/client";
 import "../index.css";
@@ -17,6 +18,7 @@ import { categories, formatAsGBP, parseAsGBP } from "../utils/constants";
 const Main = () => {
   const [checkedItems, setCheckedItems] = React.useState([]);
   const [amount, setAmount] = useState("5.00");
+  const [date, setDate] = useState(new Date());
 
   const checkCheckedItem = (checkboxString) =>
     checkedItems.includes(checkboxString)
@@ -28,6 +30,10 @@ const Main = () => {
       alert(`You have set up a payment of £${amount} to go to ${res.name}`)
     );
   };
+
+  var someDate = new Date();
+  var numberOfDaysToAdd = 5;
+  var minimumDate = someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
 
   // @params  - List of categories
   // @returns - Single charity object
@@ -60,7 +66,7 @@ const Main = () => {
           Cultural
         </Checkbox>
       </Stack>
-      <Text>Choose your payment amount</Text>
+      <Text>Choose your donation amount</Text>
       <NumberInput
         defaultValue={5}
         precision={2}
@@ -71,6 +77,15 @@ const Main = () => {
         <NumberInputField />
         <NumberInputStepper></NumberInputStepper>
       </NumberInput>
+      <Box>
+        <Text>Choose the date of your donation</Text>
+        <SingleDatepicker
+          name="date-input"
+          date={date}
+          onDateChange={setDate}
+          minDate={minimumDate}
+        />
+      </Box>
       <Button
         className="page-button"
         colorScheme="orange"

@@ -9,14 +9,34 @@ const save = async (params) => {
 };
 
 /**
+ * @method GET
+ * @access public
+ * @endpoint /api/subscription/
+ * @description Gets a list of all subscriptions from the database
+ **/
+router.get("/", async (req, res) => {
+  const users = await Subscription.find({});
+  try {
+    res.status(200).json({
+      status: "Success",
+      description: "all subscriptions in database",
+      users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err,
+    });
+  }
+});
+
+/**
  * @method POST
  * @access public
  * @endpoint /api/subscription/
  * @description Adds a Subscription to the database
  **/
 router.post("/", async (req, res) => {
-  console.log("In Route");
-  console.log(req.body);
   try {
     await save(req.body);
     res.status(201).json({
@@ -24,11 +44,17 @@ router.post("/", async (req, res) => {
       description: "Subscription added",
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      status: "Failed",
-      message: err,
-    });
+    if (err.name === "ValidationError") {
+      res.status(400).json({
+        status: "Failed",
+        description: "invalid input, object invalid",
+      });
+    } else {
+      res.status(500).json({
+        status: "Failed",
+        message: err,
+      });
+    }
   }
 });
 

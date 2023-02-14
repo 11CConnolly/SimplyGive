@@ -63,6 +63,26 @@ const SUBSCRIPTION_TEST_DATA = [
       active: true,
     },
   },
+  {
+    charity: { id: new mongo.ObjectId(), ...CHARITIES_TEST_DATA[1] },
+    user: { id: new mongo.ObjectId(), ...USERS_TEST_DATA[1] },
+    subscription: {
+      amount: 5.0,
+      createdOn: TODAYS_DATE_IN_YYYY_MM_DD(),
+      dateToTakePayment: DATE_FOR_PAYMENTS,
+      active: true,
+    },
+  },
+  {
+    charity: { id: new mongo.ObjectId(), ...CHARITIES_TEST_DATA[1] },
+    user: { id: new mongo.ObjectId(), ...USERS_TEST_DATA[1] },
+    subscription: {
+      amount: 5.0,
+      createdOn: TODAYS_DATE_IN_YYYY_MM_DD(),
+      dateToTakePayment: DATE_FOR_PAYMENTS,
+      active: true,
+    },
+  },
 ];
 
 module.exports = {

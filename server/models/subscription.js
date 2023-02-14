@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-function validateDate(date) {
-  /\d{4}-\d{2}-\d{2}$/.test(date);
-}
+const validateDate = (date) => /\d{4}-\d{2}-\d{2}$/.test(date);
+
+const TODAYS_DATE_IN_YYYY_MM_DD = () => new Date().toISOString().split("T")[0];
 
 const subscriptionSchema = new mongoose.Schema({
   userId: {
@@ -25,6 +25,7 @@ const subscriptionSchema = new mongoose.Schema({
   createdOn: {
     type: String,
     required: true,
+    default: TODAYS_DATE_IN_YYYY_MM_DD(),
     validate: { validator: (d) => validateDate(d) },
   },
   updatedOn: {

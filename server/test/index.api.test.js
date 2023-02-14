@@ -272,16 +272,22 @@ describe("API Tests", function () {
 
   describe("Subscriptions", function () {
     describe("/api/subscription", function () {
-      // Add some data before for our subscription to be able to reference
       before(async function () {
+        // Add some data before for our subscription to be able to reference
         // Add in a charity and user with Object ID's we can reference
         await Charity.create(SUBSCRIPTION_TEST_DATA[0].charity);
         await User.create(SUBSCRIPTION_TEST_DATA[0].user);
+        await Charity.create(SUBSCRIPTION_TEST_DATA[1].charity);
+        await User.create(SUBSCRIPTION_TEST_DATA[1].user);
       });
 
-      // Delete all the data and add in a single Bob
       beforeEach(async function () {
         await Subscription.deleteMany({});
+        await Subscription.create({
+          charityId: SUBSCRIPTION_TEST_DATA[1].charity.id,
+          userId: SUBSCRIPTION_TEST_DATA[1].user.id,
+          ...SUBSCRIPTION_TEST_DATA[1].subscription,
+        });
       });
 
       it("Should be able to add a single Subscription", (done) => {
@@ -299,6 +305,47 @@ describe("API Tests", function () {
             expect(res.body)
               .to.have.property("description")
               .to.be.eql("Subscription added");
+
+            done();
+          });
+      });
+
+      it("Should be reject a Subscription with an invalid date", (done) => {
+        request(app)
+          .post("/api/subscription")
+          .send({
+            charityId: SUBSCRIPTION_TEST_DATA[0].charity.id,
+            userId: SUBSCRIPTION_TEST_DATA[0].user.id,
+            ...SUBSCRIPTION_TEST_DATA[0].subscription,
+            dateToTakePayment: "invalid",
+          })
+          .expect(400)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("invalid input, object invalid");
+
+            done();
+          });
+      });
+
+      it("Should be able to get a list of all subscriptions in the database", (done) => {
+        request(app)
+          .get("/api/subscription")
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("all subscriptions in database");
+
+            expect(res.body)
+              .to.have.property("users")
+              .to.have.property("length")
+              .to.be.eql(1);
 
             done();
           });

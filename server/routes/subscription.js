@@ -15,12 +15,12 @@ const save = async (params) => {
  * @description Gets a list of all subscriptions from the database
  **/
 router.get("/", async (req, res) => {
-  const users = await Subscription.find({});
+  const subscriptions = await Subscription.find({});
   try {
     res.status(200).json({
       status: "Success",
       description: "all subscriptions in database",
-      users,
+      subscriptions,
     });
   } catch (err) {
     res.status(500).json({

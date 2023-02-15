@@ -364,7 +364,7 @@ describe("API Tests", function () {
               .to.be.eql("all subscriptions in database");
 
             expect(res.body)
-              .to.have.property("users")
+              .to.have.property("subscriptions")
               .to.have.property("length")
               .to.be.eql(1);
 

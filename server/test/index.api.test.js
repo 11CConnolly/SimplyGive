@@ -21,6 +21,9 @@ const { categories } = require("../models/categories");
 // Mock our DB connection
 let mongo = null;
 
+let user0;
+let user1;
+
 const connectDB = async () => {
   mongo = await MongoMemoryServer.create();
   const uri = mongo.getUri();
@@ -196,8 +199,8 @@ describe("API Tests", function () {
     describe("/api/user", function () {
       beforeEach(async function () {
         await User.deleteMany({});
-        await User.create(USERS_TEST_DATA[0]);
-        await User.create(USERS_TEST_DATA[1]);
+        user0 = await User.create(USERS_TEST_DATA[0]);
+        user1 = await User.create(USERS_TEST_DATA[1]);
       });
 
       it("Should be able to add a single User", (done) => {
@@ -211,6 +214,24 @@ describe("API Tests", function () {
             expect(res.body)
               .to.have.property("description")
               .to.be.eql("User added");
+
+            done();
+          });
+      });
+
+      it("Should be able to get a single users id from an email", (done) => {
+        request(app)
+          .post("/api/user/findByEmail")
+          .send({ email: user0.email })
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("success");
+
+            expect(res.body).to.have.property("userId").to.be.eql(user0.id);
 
             done();
           });
@@ -346,6 +367,54 @@ describe("API Tests", function () {
               .to.have.property("users")
               .to.have.property("length")
               .to.be.eql(1);
+
+            done();
+          });
+      });
+    });
+  });
+
+  describe("Acceptance Tests", function () {
+    describe("BASIC - Person attempting to create a new subscription", function () {
+      before(async function () {
+        await Subscription.deleteMany({});
+        await Charity.create(CHARITIES_TEST_DATA[1]);
+        await Charity.create(CHARITIES_TEST_DATA[2]);
+        await Charity.create(CHARITIES_TEST_DATA[3]);
+      });
+
+      it("Should be able to register and setup a single Subscription", (done) => {
+        const { name, email } = USERS_TEST_DATA[0];
+        const { amount, dateToTakePayment } =
+          SUBSCRIPTION_TEST_DATA[0].subscription;
+
+        request(app)
+          .post("/api/register")
+          .send({
+            name,
+            email,
+            categories: [categories.ANIMAL, categories.CRISIS],
+            amount,
+            dateToTakePayment,
+          })
+          .expect(201)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Registration successful, subscription complete!");
+
+            expect(res.body)
+              .to.have.property("subscription")
+              .to.include.keys(
+                "userId",
+                "charityId",
+                "amount",
+                "dateToTakePayment",
+                "createdOn",
+                "active"
+              );
 
             done();
           });

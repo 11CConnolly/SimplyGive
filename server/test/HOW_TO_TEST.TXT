@@ -27,5 +27,10 @@ STRESS - Testing a system with deliberatly intense tests in terms of volume, pro
 PERFORMANCE - Tests which measure some non-functional aspect of the system and that it conforms to those requirementes e.g. timing
 SECURITY - Testing different methods to break a program, exploit points of weakness, or vulnerabilities and ensuring robustness to these attempts.
 
+4. Test Fragility
+Test are designed to test a single aspect of the program. They should do this in a robust way, i.e. if there is some aspect of the 
+program that changes, the test is loosely coupled enough from this specific implementation that it is flexible enough to still ensure the correct 
+functionality of the program. 
+
 
 https://www.functionize.com/blog/7-principles-of-software-testing

@@ -63,4 +63,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @method POST
+ * @access public
+ * @endpoint /api/user/findByEmail
+ * @description Gets a users id by email
+ **/
+router.post("/findByEmail", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      email: req.body.email,
+    });
+    res.status(200).json({
+      status: "Success",
+      description: "success",
+      userId: user.id,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err,
+    });
+  }
+});
+
 module.exports = router;

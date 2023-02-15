@@ -1,19 +1,23 @@
 import { Button, Box, Flex } from "@chakra-ui/react";
+import useDataApi from "../hooks/useDataApi";
 import "../index.css";
 
 const Subscriptions = () => {
-  const subs = ["100", "31", "1313", "3333"];
+  const [dataState] = useDataApi("/api/subscription");
+
   return (
     <Box className="page-container users-box">
       <Flex flexDirection="column">
-        {subs.map((sub) => (
-          <Button className="page-button" colorScheme="whiteAlpha">
-            {sub}
-          </Button>
-        ))}
+        {dataState.data.subscriptions &&
+          dataState.data.subscriptions.map((subscription, i) => (
+            <Button className="page-button" colorScheme="whiteAlpha" key={i}>
+              {subscription.charityId}
+              {subscription.userId}
+              {subscription.amount}
+            </Button>
+          ))}
       </Flex>
     </Box>
   );
 };
-
 export default Subscriptions;

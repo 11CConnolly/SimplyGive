@@ -8,7 +8,9 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
+  Input,
 } from "@chakra-ui/react";
+import { SingleDatepicker } from "chakra-dayzed-datepicker";
 
 import client from "../utils/client";
 import "../index.css";
@@ -17,6 +19,9 @@ import { categories, formatAsGBP, parseAsGBP } from "../utils/constants";
 const Main = () => {
   const [checkedItems, setCheckedItems] = React.useState([]);
   const [amount, setAmount] = useState("5.00");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [date, setDate] = useState(new Date());
 
   const checkCheckedItem = (checkboxString) =>
     checkedItems.includes(checkboxString)
@@ -24,21 +29,30 @@ const Main = () => {
       : setCheckedItems(checkedItems.concat(checkboxString));
 
   const buttonClick = () => {
-    getCharityFromSelection().then((res) =>
-      alert(`You have set up a payment of £${amount} to go to ${res.name}`)
-    );
+    // TODO Do some basic FE validation first of all
+    console.log(date);
+    registerRequest().then((res) => {
+      console.log(res);
+    });
   };
-
-  // @params  - List of categories
-  // @returns - Single charity object
-  const getCharityFromSelection = async () => {
+  // @params  - Registration request
+  // @returns - Created subscription
+  const registerRequest = async () => {
     return client
-      .post("/api/charity/findSingleByCategory", {
+      .post("/api/register", {
+        name: username,
+        email,
+        amount,
+        dateToTakePayment: date.toISOString().split("T")[0],
         categories: checkedItems,
       })
-      .then((res) => res.data.charity)
+      .then((res) => res.data)
       .catch((err) => console.log(err));
   };
+
+  var someDate = new Date();
+  var numberOfDaysToAdd = 5;
+  var minimumDate = someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
 
   return (
     <Box className="page-container main-container">
@@ -60,7 +74,13 @@ const Main = () => {
           Cultural
         </Checkbox>
       </Stack>
-      <Text>Choose your payment amount</Text>
+      <Text>
+        Enter your email to receive donation updates and create an account
+      </Text>
+      <Input width={"20rem"} onChange={(e) => setEmail(e.target.value)} />
+      <Text>What's your name?</Text>
+      <Input width={"20rem"} onChange={(e) => setUsername(e.target.value)} />
+      <Text>Choose your donation amount</Text>
       <NumberInput
         defaultValue={5}
         precision={2}
@@ -71,6 +91,15 @@ const Main = () => {
         <NumberInputField />
         <NumberInputStepper></NumberInputStepper>
       </NumberInput>
+      <Box>
+        <Text>Choose the date of your donation</Text>
+        <SingleDatepicker
+          name="date-input"
+          date={date}
+          onDateChange={(e) => setDate}
+          minDate={minimumDate}
+        />
+      </Box>
       <Button
         className="page-button"
         colorScheme="orange"

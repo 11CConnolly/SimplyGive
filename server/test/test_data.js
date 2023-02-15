@@ -1,3 +1,4 @@
+const { mongo } = require("mongoose");
 const { categories } = require("../models/categories");
 
 const CHARITIES_TEST_DATA = [
@@ -48,4 +49,44 @@ const USERS_TEST_DATA = [
   },
 ];
 
-module.exports = { CHARITIES_TEST_DATA, USERS_TEST_DATA };
+const DATE_FOR_PAYMENTS = "2023-03-25";
+const TODAYS_DATE_IN_YYYY_MM_DD = () => new Date().toISOString().split("T")[0];
+
+const SUBSCRIPTION_TEST_DATA = [
+  {
+    charity: { id: new mongo.ObjectId(), ...CHARITIES_TEST_DATA[0] },
+    user: { id: new mongo.ObjectId(), ...USERS_TEST_DATA[0] },
+    subscription: {
+      amount: 5.0,
+      createdOn: TODAYS_DATE_IN_YYYY_MM_DD(),
+      dateToTakePayment: DATE_FOR_PAYMENTS,
+      active: true,
+    },
+  },
+  {
+    charity: { id: new mongo.ObjectId(), ...CHARITIES_TEST_DATA[1] },
+    user: { id: new mongo.ObjectId(), ...USERS_TEST_DATA[1] },
+    subscription: {
+      amount: 5.0,
+      createdOn: TODAYS_DATE_IN_YYYY_MM_DD(),
+      dateToTakePayment: DATE_FOR_PAYMENTS,
+      active: true,
+    },
+  },
+  {
+    charity: { id: new mongo.ObjectId(), ...CHARITIES_TEST_DATA[1] },
+    user: { id: new mongo.ObjectId(), ...USERS_TEST_DATA[1] },
+    subscription: {
+      amount: 5.0,
+      createdOn: TODAYS_DATE_IN_YYYY_MM_DD(),
+      dateToTakePayment: DATE_FOR_PAYMENTS,
+      active: true,
+    },
+  },
+];
+
+module.exports = {
+  CHARITIES_TEST_DATA,
+  USERS_TEST_DATA,
+  SUBSCRIPTION_TEST_DATA,
+};

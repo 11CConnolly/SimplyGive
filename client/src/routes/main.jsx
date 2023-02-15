@@ -20,7 +20,7 @@ const Main = () => {
   const [checkedItems, setCheckedItems] = React.useState([]);
   const [amount, setAmount] = useState("5.00");
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [date, setDate] = useState(new Date());
 
   const checkCheckedItem = (checkboxString) =>
@@ -29,45 +29,24 @@ const Main = () => {
       : setCheckedItems(checkedItems.concat(checkboxString));
 
   const buttonClick = () => {
-    addUser()
-      .then(() => {
-        getUserID().then((id) => {});
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // Make a single request to add a subscription
-    // email
-    // name
-    // amount
-    // dateToTakePayment - maybe just a month?
-    // categories
+    // TODO Do some basic FE validation first of all
+    console.log(date);
+    registerRequest().then((res) => {
+      console.log(res);
+    });
   };
-
-  // Should be able to add a user with an email and name - [ ]
-  // So single request to add a user - maybe this is best of as a form? But I want to make it super simple
-  // Once that's clear, make a request to add a subscription
-  // Should be able to, from a list of categories, select a single charity - [X]
-  // Should be able to add a subscription with the email, list of categories, and rest of the required categories - [ ]
-
-  const addUser = () => {};
-
-  // @returns - string with the user's ID
-  const getUserID = () => {
+  // @params  - Registration request
+  // @returns - Created subscription
+  const registerRequest = async () => {
     return client
-      .post("/api/user/findByEmail", {
+      .post("/api/register", {
+        name: username,
         email,
-      })
-      .then((res) => res.data.userId)
-      .catch((err) => console.log(err));
-  };
-
-  const getCharityFromSelection = async () => {
-    return client
-      .post("/api/charity/findSingleByCategory", {
+        amount,
+        dateToTakePayment: date.toISOString().split("T")[0],
         categories: checkedItems,
       })
-      .then((res) => res.data.charity)
+      .then((res) => res.data)
       .catch((err) => console.log(err));
   };
 
@@ -100,7 +79,7 @@ const Main = () => {
       </Text>
       <Input width={"20rem"} onChange={(e) => setEmail(e.target.value)} />
       <Text>What's your name?</Text>
-      <Input width={"20rem"} onChange={(e) => setName(e.target.value)} />
+      <Input width={"20rem"} onChange={(e) => setUsername(e.target.value)} />
       <Text>Choose your donation amount</Text>
       <NumberInput
         defaultValue={5}
@@ -117,7 +96,7 @@ const Main = () => {
         <SingleDatepicker
           name="date-input"
           date={date}
-          onDateChange={setDate}
+          onDateChange={(e) => setDate}
           minDate={minimumDate}
         />
       </Box>

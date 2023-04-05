@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
     const user = new User({ name, email });
     const newUser = await user.save();
 
-    // Then get a charity that we want
+    // Then get a list of charities that match the categories
     const charities = await Charity.find({
       categories: { $in: categories },
     });
@@ -40,6 +40,7 @@ router.post("/", async (req, res) => {
       dateToTakePayment,
       active: true,
     });
+
     const newSubscription = await subscription.save();
 
     res.status(201).json({

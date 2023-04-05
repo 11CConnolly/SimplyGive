@@ -288,6 +288,37 @@ describe("API Tests", function () {
             done();
           });
       });
+
+      it("Should be able to return a list of donations", (done) => {
+        request(app)
+          .get("/api/user/donations")
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("success");
+
+            expect(res.body).to.have.property("donations");
+
+            done();
+          });
+      });
+      it("Should be able to return a correct 204 error with no donations", (done) => {
+        request(app)
+          .get("/api/user/donations")
+          .expect(204)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("invalid input, object invalid");
+
+            done();
+          });
+      });
     });
   });
 

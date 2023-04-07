@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 // Preventing common security issues e.g. in HTTP headers
 app.use(helmet());
-// Preventing fingerprinting, increasing security posture
+// Preventing fingerprinting, increasing security posture.
 app.disable("x-powered-by");
 
 /*
@@ -42,28 +42,16 @@ if (process.env.NODE_ENV !== "test") {
  */
 
 // TODO Make our routes for this use validation or requests with joi - ideally in a consistent way
-
-const charityRoutes = require("./routes/charity");
-app.use("/api/charity", charityRoutes);
-
-const userRoutes = require("./routes/user");
-app.use("/api/user", userRoutes);
-
-const subscriptionRoutes = require("./routes/subscription");
-app.use("/api/subscription", subscriptionRoutes);
-
 const registerRoutes = require("./routes/register");
 app.use("/api/register", registerRoutes);
 
 /*
  * Custom error pages to reduce information leakage and enhance security posture
  */
-// Custom 404
 app.use((req, res, next) => {
   res.status(404).send("Sorry can't find that!");
 });
 
-// Custom error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

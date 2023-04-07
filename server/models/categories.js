@@ -6,6 +6,7 @@ const categories = {
   ANIMAL: "animal",
   CRISIS: "crisis",
   CULTURAL: "cultural",
+  EDUCATION: "education",
 };
 
 const categoriesArray = Object.values(categories);

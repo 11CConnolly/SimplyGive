@@ -50,9 +50,14 @@ describe("API Tests", function () {
   describe("Register User", function () {
     describe("Person attempting to create a new subscription", function () {
       before(async function () {
-        await Charity.create(CHARITIES_TEST_DATA[1]);
-        await Charity.create(CHARITIES_TEST_DATA[2]);
-        await Charity.create(CHARITIES_TEST_DATA[3]);
+        const { name, email, subscription, amount, categories } =
+          REGISTER_TEST_DATA[1];
+
+        await User.create({
+          name,
+          email,
+          subscription: { amount, categories, active: true },
+        });
       });
 
       it("Should be able to register and setup a single Subscription", (done) => {
@@ -66,6 +71,38 @@ describe("API Tests", function () {
             expect(res.body)
               .to.have.property("description")
               .to.be.eql("Registration successful, subscription complete!");
+
+            done();
+          });
+      });
+
+      it("Should reject the setup for a malformed subscription", (done) => {
+        request(app)
+          .post("/api/register")
+          .send({ ...REGISTER_TEST_DATA[0], name: null, email: null })
+          .expect(400)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Invalid input, object invalid");
+
+            done();
+          });
+      });
+
+      it("Should not let me register if the email already exists", (done) => {
+        request(app)
+          .post("/api/register")
+          .send({ ...REGISTER_TEST_DATA[1] })
+          .expect(422)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body)
+              .to.have.property("description")
+              .to.be.eql("Email already in use!");
 
             done();
           });

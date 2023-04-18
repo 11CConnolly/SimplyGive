@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -13,14 +14,18 @@ router.post("/", async (req, res) => {
   // User properties
   const { name, email } = req.body;
 
-  // Charity properties
-  const { categories } = req.body;
-
   // Subscription properties
-  const { amount } = req.body;
+  const { categories, amount } = req.body;
 
   try {
-    // Add a new User
+    // If user already exists, return early with error
+    if (await User.findOne({ email: req.body.email })) {
+      res.status(422).json({
+        status: "Email already in use!",
+        message: err,
+      });
+    }
+
     await new User({
       name,
       email,
@@ -32,7 +37,12 @@ router.post("/", async (req, res) => {
       description: "Registration successful, subscription complete!",
     });
   } catch (err) {
-    console.log(err);
+    if (err instanceof mongoose.Error.ValidationError) {
+      res.status(400).json({
+        status: "Invalid input, object invalid",
+        message: err,
+      });
+    }
     res.status(500).json({
       status: "Failed",
       message: err,

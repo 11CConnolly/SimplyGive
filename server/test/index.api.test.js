@@ -42,16 +42,10 @@ describe("API Tests", function () {
     await mongo.stop();
   });
 
-  afterEach(async function () {
-    await User.deleteMany({});
-    await Charity.deleteMany({});
-  });
-
   describe("Register User", function () {
     describe("Person attempting to create a new subscription", function () {
       before(async function () {
-        const { name, email, subscription, amount, categories } =
-          REGISTER_TEST_DATA[1];
+        const { name, email, amount, categories } = REGISTER_TEST_DATA[1];
 
         await User.create({
           name,

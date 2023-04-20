@@ -9,7 +9,7 @@ import ErrorPage from "./routes/error-page";
 import Root from "./routes/root";
 import Main from "./routes/main";
 import Users from "./routes/users";
-import Subscriptions from "./routes/subscriptions";
+import Contact from "./routes/contact";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
         element: <Users />,
       },
       {
-        path: "/subscriptions",
-        element: <Subscriptions />,
+        path: "/contact",
+        element: <Contact />,
       },
     ],
   },

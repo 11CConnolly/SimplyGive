@@ -4,6 +4,7 @@ const categories = {
   ANIMAL: "animal",
   CRISIS: "crisis",
   CULTURAL: "cultural",
+  EDUCATION: "education",
 };
 
 const formatAsGBP = (val) => "£" + val;

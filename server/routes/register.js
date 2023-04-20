@@ -18,19 +18,13 @@ router.post("/", async (req, res) => {
   const { categories, amount } = req.body;
 
   try {
-    // If user already exists, return early with error
-    if (await User.findOne({ email: req.body.email })) {
-      res.status(422).json({
-        status: "Email already in use!",
-        message: err,
-      });
-    }
-
     await new User({
       name,
       email,
       subscription: { amount, categories, active: true },
     }).save();
+
+    console.log(email);
 
     res.status(201).json({
       status: "Success",
@@ -39,14 +33,21 @@ router.post("/", async (req, res) => {
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       res.status(400).json({
-        status: "Invalid input, object invalid",
+        description: "Invalid input, object invalid",
+        message: err,
+      });
+    } else if (err.code === 11000) {
+      // If error code is caused by duplicated key from MongoDB Schema Violation
+      res.status(422).json({
+        description: "Email already in use!",
+        message: err,
+      });
+    } else {
+      res.status(500).json({
+        status: "Failed",
         message: err,
       });
     }
-    res.status(500).json({
-      status: "Failed",
-      message: err,
-    });
   }
 });
 

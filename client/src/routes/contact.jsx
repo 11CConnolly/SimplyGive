@@ -59,7 +59,7 @@ const Contact = () => {
                         _hover={{ border: "2px solid #1C6FEB" }}
                         leftIcon={<MdPhone color="#1970F1" size="20px" />}
                       >
-                        +91-988888888
+                        +447933911256
                       </Button>
                       <Button
                         size="md"
@@ -70,7 +70,7 @@ const Contact = () => {
                         _hover={{ border: "2px solid #1C6FEB" }}
                         leftIcon={<MdEmail color="#1970F1" size="20px" />}
                       >
-                        hello@abc.com
+                        callumc11@gmail.com
                       </Button>
                       <Button
                         size="md"
@@ -106,14 +106,6 @@ const Contact = () => {
                       isRound={true}
                       _hover={{ bg: "#0D74FF" }}
                       icon={<BsGithub size="28px" />}
-                    />
-                    <IconButton
-                      aria-label="discord"
-                      variant="ghost"
-                      size="lg"
-                      isRound={true}
-                      _hover={{ bg: "#0D74FF" }}
-                      icon={<BsDiscord size="28px" />}
                     />
                   </HStack>
                 </Box>

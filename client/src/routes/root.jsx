@@ -18,12 +18,12 @@ const Root = () => {
           </Link>
           <Link to={`users`}>
             <Button className="root-button" colorScheme="teal" variant="ghost">
-              Users
+              Charities
             </Button>
           </Link>
           <Link to={`contact`}>
             <Button className="root-button" colorScheme="teal" variant="ghost">
-              Subscriptions
+              Contact
             </Button>
           </Link>
         </Box>

@@ -16,7 +16,7 @@ const Root = () => {
               Home
             </Button>
           </Link>
-          <Link to={`users`}>
+          <Link to={`charities`}>
             <Button className="root-button" colorScheme="teal" variant="ghost">
               Charities
             </Button>

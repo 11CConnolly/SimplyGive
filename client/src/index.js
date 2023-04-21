@@ -8,7 +8,7 @@ import ErrorPage from "./routes/error-page";
 
 import Root from "./routes/root";
 import Main from "./routes/main";
-import Users from "./routes/users";
+import Charities from "./routes/charities";
 import Contact from "./routes/contact";
 
 const router = createBrowserRouter([
@@ -22,8 +22,8 @@ const router = createBrowserRouter([
         element: <Main />,
       },
       {
-        path: "/users",
-        element: <Users />,
+        path: "/charities",
+        element: <Charities />,
       },
       {
         path: "/contact",

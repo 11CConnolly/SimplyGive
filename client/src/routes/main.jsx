@@ -7,7 +7,6 @@ import {
   Flex,
   Heading,
   Grid,
-  GridItem,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -42,12 +41,11 @@ const Main = () => {
       <VStack className="page-container" spacing={1}>
         {/* FIRST BOX */}
         <Flex
-          className="landing-section"
+          className="landing-section background-charity"
           w={"100%"}
           h="2xl"
           backgroundImage={charity}
-          backgroundSize={"contain"}
-          backgroundPosition={"25rem"}
+          backgroundSize={"cover"}
         >
           <Box className="first-box-left">
             <Heading size="2xl" textColor={"ivory"}>

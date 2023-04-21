@@ -95,6 +95,10 @@ body {
  * MAIN PAGE 
  */
 
+.background-charity {
+  background: center center;
+}
+
 .first-box-left {
   flex-basis: 45%;
   padding-left: 30px;

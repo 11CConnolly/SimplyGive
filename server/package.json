@@ -22,7 +22,8 @@
     "helmet": "^6.0.1",
     "joi": "^17.7.0",
     "mongodb-memory-server": "^8.11.4",
-    "mongoose": "^6.8.4"
+    "mongoose": "^6.8.4",
+    "nodemailer": "^6.9.1"
   },
   "devDependencies": {
     "chai": "^4.3.7",

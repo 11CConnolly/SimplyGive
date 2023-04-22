@@ -34,7 +34,7 @@ if (process.env.NODE_ENV !== "test") {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    .then(() => console.log("Connected to Database"));
+    .then(() => console.log("Connected to LIVE Database"));
 }
 
 /*

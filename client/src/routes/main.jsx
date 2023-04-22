@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   VStack,
+  StackDivider,
   Center,
   Text,
   Flex,
@@ -12,12 +13,20 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Input,
+  Image,
   Button,
+  HStack,
+  Stat,
+  StatLabel,
+  StatHelpText,
+  StatNumber,
 } from "@chakra-ui/react";
 import "../index.css";
 import { zIndexLevels } from "../utils/constants";
 
 import charity from "../charity.jpg";
+
+import LogoSGmin from "../LogoSGmin.png";
 
 const Main = () => {
   // @params  - Registration request
@@ -38,7 +47,7 @@ const Main = () => {
 
   return (
     <>
-      <VStack className="page-container" spacing={1}>
+      <VStack className="page-container" spacing={0}>
         {/* FIRST BOX */}
         <Flex
           className="landing-section background-charity"
@@ -48,15 +57,19 @@ const Main = () => {
           backgroundSize={"cover"}
         >
           <Box className="first-box-left">
-            <Heading size="2xl" textColor={"ivory"}>
+            <Heading size="2xl" textColor={"#FEFEEE"}>
               SimplyGive makes it easier for to support the issues that are
               closest to your heart.
             </Heading>
-            <br></br>
-            <br></br>
-            <Heading size="2xl" textColor={"ivory"}>
-              It's your subscription to make the world a better place
-            </Heading>
+            <br />
+            <br />
+            <Text as={"b"} fontSize={"xl"} textColor={"#FEFEEE"}>
+              It's your one subscription to make the world a better place.
+            </Text>
+            <br />
+            <Text as={"b"} fontSize={"xl"} textColor={"#FEFEEE"}>
+              Learn more about how it works below.
+            </Text>
           </Box>
           <Box className="first-box-right"></Box>
         </Flex>
@@ -64,17 +77,104 @@ const Main = () => {
         {/* SECOND BOX */}
         <Center
           className="landing-section"
-          h="lg"
+          h="md"
           width="100%"
-          backgroundColor={"lightslategrey"}
+          backgroundColor={"#262729"}
         >
           <Box
             borderRadius="lg"
-            h="xl"
+            h="lg"
             width="80%"
-            backgroundColor="#282c34"
+            backgroundColor="#EFF0E1"
             zIndex={zIndexLevels.LEVEL_MED}
-          ></Box>
+          >
+            <Center>
+              <Heading size={"md"} paddingTop={"20px"}>
+                Here what we've done so far:
+              </Heading>
+            </Center>
+            <HStack
+              divider={<StackDivider borderColor="#F8586A" />}
+              spacing={4}
+              display={"flex"}
+              align="start"
+              justifyContent={"space-evenly"}
+              alignContent={"center"}
+              paddingLeft={"20px"}
+              paddingRight={"20px"}
+              paddingTop={"50px"}
+            >
+              <Box flexBasis={"25%"}>
+                <Stat>
+                  <StatLabel>Categories of Charity</StatLabel>
+                  <StatNumber textColor={"#F8586A"}>8</StatNumber>
+                  <StatHelpText>
+                    Based on Feedback from 1000 of people
+                  </StatHelpText>
+                </Stat>
+              </Box>
+              <Box flexBasis={"25%"}>
+                <Stat>
+                  <StatLabel>Total Donations</StatLabel>
+                  <StatNumber textColor={"#F8586A"}>£1605.00</StatNumber>
+                  <StatHelpText>Since we launched</StatHelpText>
+                </Stat>
+              </Box>
+              <Box flexBasis={"25%"}>
+                <Stat>
+                  <StatLabel as={"b"}>Charities Helped</StatLabel>
+                  <StatNumber textColor={"#F8586A"}>120</StatNumber>
+                  <StatHelpText>Across England and Wales</StatHelpText>
+                </Stat>
+              </Box>
+              <Box flexBasis={"25%"}>
+                <Stat>
+                  <StatLabel>Average Donation</StatLabel>
+                  <StatNumber textColor={"#F8586A"}>£10.00</StatNumber>
+                  <StatHelpText>From over 100 givers</StatHelpText>
+                </Stat>
+              </Box>
+            </HStack>
+
+            <Center>
+              <Heading size={"lg"} paddingTop={"50px"}>
+                Our Principles
+              </Heading>
+            </Center>
+
+            <HStack
+              spacing={4}
+              display={"flex"}
+              align="start"
+              justifyContent={"space-evenly"}
+              alignContent={"center"}
+              paddingLeft={"20px"}
+              paddingRight={"20px"}
+              paddingTop={"25px"}
+            >
+              <Center flexBasis={"30%"} flexDirection={"column"}>
+                <Heading>Privacy</Heading>
+                <Text>We never sell or pass on your data,</Text>
+              </Center>
+
+              <Center flexBasis={"30%"} flexDirection={"column"}>
+                <Heading>Transparency</Heading>
+                <Text>
+                  All our costs are broken down and shown to you when you make
+                  your donation. We include a small processing fee. Each Quarter
+                </Text>
+              </Center>
+
+              <Center flexBasis={"30%"} flexDirection={"column"}>
+                <Heading>Simplicity</Heading>
+                <Text>
+                  One Direct Debit a month. One email a month. We make it simple
+                  to make any changes to your subscription, or cancel your
+                  subscription at any time.
+                </Text>
+              </Center>
+            </HStack>
+          </Box>
         </Center>
 
         {/* THIRD BOX */}
@@ -86,7 +186,7 @@ const Main = () => {
             <br></br>
             <br></br>
             <Text fontSize="2xl" as={"b"} textAlign={"center"}>
-              Select the issues most important to you
+              Select the causes closest to your heart
             </Text>
           </Box>
           <Box className="section-box-right">
@@ -94,7 +194,7 @@ const Main = () => {
               h="250px"
               w="xl"
               templateRows="repeat(2, 1fr)"
-              templateColumns="repeat(3, 1fr)"
+              templateColumns="repeat(4, 1fr)"
               gap={6}
               className="grid"
             >
@@ -104,6 +204,11 @@ const Main = () => {
                 bg="tomato"
                 className="griddy"
                 height="100%"
+                _active={{
+                  bg: "#dddfe2",
+                  transform: "scale(0.98)",
+                  borderColor: "#bec3c9",
+                }}
               >
                 <Text as={"b"} className="griddy-text">
                   Healthcare
@@ -164,19 +269,51 @@ const Main = () => {
                   Education
                 </Text>
               </Button>
+              <Button
+                rowSpan={1}
+                colSpan={1}
+                bg="papayawhip"
+                className="griddy"
+                h="100%"
+              >
+                <Text as={"b"} className="griddy-text">
+                  LGBTQ+
+                </Text>
+              </Button>
+              <Button
+                rowSpan={1}
+                colSpan={1}
+                bg="papayawhip"
+                className="griddy"
+                h="100%"
+              >
+                <Text as={"b"} className="griddy-text">
+                  Economic Development
+                </Text>
+              </Button>
             </Grid>
           </Box>
         </Flex>
 
         {/* FOURTH BOX */}
-        <Flex h="md" w={"100%"} className="landing-section">
+        <Flex
+          h="md"
+          w={"100%"}
+          className="landing-section"
+          backgroundColor={"#282c34"}
+        >
           <Box className="section-box-left">
-            <Heading size="4xl" textAlign={"center"}>
+            <Heading size="4xl" textAlign={"center"} textColor={"ivory"}>
               Step 2
             </Heading>
             <br></br>
             <br></br>
-            <Text fontSize="2xl" as={"b"} textAlign={"center"}>
+            <Text
+              fontSize="2xl"
+              as={"b"}
+              textAlign={"center"}
+              textColor={"ivory"}
+            >
               Choose your Monthly Donation
             </Text>
           </Box>
@@ -212,7 +349,13 @@ const Main = () => {
           </Box>
         </Flex>
 
-        <Flex h="md" w={"100%"} className="landing-section">
+        <Flex
+          h="md"
+          w={"100%"}
+          className="landing-section"
+          backgroundColor={"#282c34"}
+          textColor={"ivory"}
+        >
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
               Step 4
@@ -230,13 +373,16 @@ const Main = () => {
               <Text paddingRight={"20px"}>Chosen Charities</Text>
               <Input w="sm" variant={"outline"} />
               <Box paddingTop={"10px"} display={"flex"}>
-                <Button>Submit</Button>
+                <Button textColor={"#282c34"}>Submit</Button>
               </Box>
             </VStack>
           </Box>
         </Flex>
       </VStack>
       <Center className="footer" h={"100px"}>
+        <Box w={"200px"}>
+          <Image width="150px" src={LogoSGmin} alt="Simply Give Logo" />
+        </Box>
         <Text color={"whitesmoke"}>
           SimplyGive, Registered Charity: 89003883
         </Text>

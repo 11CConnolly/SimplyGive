@@ -16,14 +16,24 @@ const Root = () => {
               Home
             </Button>
           </Link>
-          <Link to={`charities`}>
+          <Link to={`charity-portal`}>
             <Button className="root-button" colorScheme="teal" variant="ghost">
               Charities
+            </Button>
+          </Link>
+          <Link to={`about-us`}>
+            <Button className="root-button" colorScheme="teal" variant="ghost">
+              About
             </Button>
           </Link>
           <Link to={`contact`}>
             <Button className="root-button" colorScheme="teal" variant="ghost">
               Contact
+            </Button>
+          </Link>
+          <Link to={`sign-in`}>
+            <Button className="root-button" colorScheme="teal" variant="ghost">
+              Sign In
             </Button>
           </Link>
         </Box>

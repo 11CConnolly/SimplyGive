@@ -75,7 +75,6 @@ body {
 
 .page-container {
   width: 100%;
-  background-color: rebeccapurple;
 }
 
 .footer {
@@ -84,7 +83,7 @@ body {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   align-items: center;
-  background-color: #282c34;
+  background-color: #0a1119;
   display: flex;
   text-align: center;
   justify-content: space-evenly;
@@ -120,6 +119,7 @@ body {
   display: flex;
   border-radius: 0.4rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 10px;
+  word-wrap: break-word;
 }
 
 .griddy-text {

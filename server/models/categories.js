@@ -7,6 +7,8 @@ const categories = {
   CRISIS: "crisis",
   CULTURAL: "cultural",
   EDUCATION: "education",
+  LGBTQ: "lgbtq",
+  DEVELOPMENT: "development",
 };
 
 const categoriesArray = Object.values(categories);

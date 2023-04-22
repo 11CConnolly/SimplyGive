@@ -5,6 +5,19 @@ const categories = {
   CRISIS: "crisis",
   CULTURAL: "cultural",
   EDUCATION: "education",
+  LGBTQ: "lgbtq",
+  DEVELOPMENT: "development",
+};
+
+const categoriesToDisplayText = {
+  HEALTH: "Health",
+  WELFARE: "Welfare",
+  ANIMAL: "Animal",
+  CRISIS: "Crisis and Disaster",
+  CULTURAL: "Culture",
+  EDUCATION: "Education",
+  LGBTQ: "LGBTQ+",
+  DEVELOPMENT: "Economic Development",
 };
 
 const formatAsGBP = (val) => "£" + val;
@@ -16,4 +29,10 @@ const zIndexLevels = {
   LEVEL_ULTRA_HIGH: 100,
 };
 
-module.exports = { categories, formatAsGBP, parseAsGBP, zIndexLevels };
+module.exports = {
+  categories,
+  categoriesToDisplayText,
+  formatAsGBP,
+  parseAsGBP,
+  zIndexLevels,
+};

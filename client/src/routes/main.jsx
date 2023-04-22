@@ -20,6 +20,11 @@ import {
   StatLabel,
   StatHelpText,
   StatNumber,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import "../index.css";
 import { zIndexLevels } from "../utils/constants";
@@ -43,7 +48,9 @@ const Main = () => {
   //     .then((res) => res.data)
   //     .catch((err) => console.log(err));
   // };
-  // TODO Turn the boxes into a component
+
+  const [value, setValue] = React.useState(5);
+  const handleChange = (value) => setValue(value);
 
   return (
     <>
@@ -201,14 +208,9 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="tomato"
                 className="griddy"
                 height="100%"
-                _active={{
-                  bg: "#dddfe2",
-                  transform: "scale(0.98)",
-                  borderColor: "#bec3c9",
-                }}
+                bg="#F8586A"
               >
                 <Text as={"b"} className="griddy-text">
                   Healthcare
@@ -217,8 +219,8 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="papayawhip"
                 className="griddy"
+                bg="#F8586A"
                 h="100%"
               >
                 <Text as={"b"} className="griddy-text">
@@ -228,7 +230,7 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="papayawhip"
+                bg="#F8586A"
                 className="griddy"
                 h="100%"
               >
@@ -239,7 +241,7 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="tomato"
+                bg="#F8586A"
                 className="griddy"
                 h="100%"
               >
@@ -250,7 +252,7 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="tomato"
+                bg="#F8586A"
                 className="griddy"
                 h="100%"
               >
@@ -261,7 +263,7 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="papayawhip"
+                bg="#F8586A"
                 className="griddy"
                 h="100%"
               >
@@ -272,7 +274,7 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="papayawhip"
+                bg="#F8586A"
                 className="griddy"
                 h="100%"
               >
@@ -283,7 +285,7 @@ const Main = () => {
               <Button
                 rowSpan={1}
                 colSpan={1}
-                bg="papayawhip"
+                bg="#F8586A"
                 className="griddy"
                 h="100%"
               >
@@ -297,7 +299,7 @@ const Main = () => {
 
         {/* FOURTH BOX */}
         <Flex
-          h="md"
+          h="sm"
           w={"100%"}
           className="landing-section"
           backgroundColor={"#282c34"}
@@ -318,17 +320,39 @@ const Main = () => {
             </Text>
           </Box>
           <Box className="section-box-right">
-            <Slider aria-label="slider-ex-1" defaultValue={30}>
-              <SliderTrack>
-                <SliderFilledTrack />
-              </SliderTrack>
-              <SliderThumb />
-            </Slider>
+            <Center w={"sm"} margin={"auto"}>
+              <NumberInput
+                maxW="100px"
+                mr="2rem"
+                min={5}
+                value={value}
+                onChange={handleChange}
+                textColor={"ivory"}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper color={"ivory"} />
+                  <NumberDecrementStepper color={"ivory"} />
+                </NumberInputStepper>
+              </NumberInput>
+              <Slider
+                flex="1"
+                min={5}
+                focusThumbOnChange={false}
+                value={value}
+                onChange={handleChange}
+              >
+                <SliderTrack>
+                  <SliderFilledTrack bg="#F8586A" />
+                </SliderTrack>
+                <SliderThumb boxSize="32px" />
+              </Slider>
+            </Center>
           </Box>
         </Flex>
 
         {/* FIFTH BOX */}
-        <Flex h="md" w={"100%"} className="landing-section">
+        <Flex h="sm" w={"100%"} className="landing-section">
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
               Step 3
@@ -367,12 +391,12 @@ const Main = () => {
             </Text>
           </Box>
           <Box className="section-box-right">
-            <VStack paddingTop={"50px"}>
-              <Text paddingRight={"20px"}>Amount</Text>
-              <Input w="xs" variant={"outline"} />
-              <Text paddingRight={"20px"}>Chosen Charities</Text>
-              <Input w="sm" variant={"outline"} />
-              <Box paddingTop={"10px"} display={"flex"}>
+            <VStack paddingTop={"50px"} textAlign={"left"}>
+              <Text paddingRight={"20px"}>Amount: £5.00</Text>
+              <Text paddingRight={"20px"}>Categories: Animal, LGBTQ+</Text>
+              <Text paddingRight={"20px"}>Name: Callum</Text>
+              <Text paddingRight={"20px"}>Email: callumc11@gmail.com</Text>
+              <Box padding={"10px 0px 0px 100px"}>
                 <Button textColor={"#282c34"}>Submit</Button>
               </Box>
             </VStack>

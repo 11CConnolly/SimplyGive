@@ -27,27 +27,26 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import "../index.css";
-import { zIndexLevels } from "../utils/constants";
 
+import client from "../utils/client";
+import { categories, zIndexLevels } from "../utils/constants";
 import charity from "../charity.jpg";
-
 import LogoSGmin from "../LogoSGmin.png";
 
 const Main = () => {
-  // @params  - Registration request
-  // @returns - Created subscription
-  // const registerRequest = async () => {
-  //   return client
-  //     .post("/api/register", {
-  //       name: username,
-  //       email,
-  //       amount,
-  //       dateToTakePayment: date.toISOString().split("T")[0],
-  //       categories: checkedItems,
-  //     })
-  //     .then((res) => res.data)
-  //     .catch((err) => console.log(err));
-  // };
+  //@params  - Registration request
+  //@returns - Created subscription
+  const registerRequest = async () => {
+    return client
+      .post("/api/register", {
+        name: "Callum",
+        email: "callumc11@gmail.com",
+        amount: 5.0,
+        categories: [categories.HEALTH, categories.EDUCATION],
+      })
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+  };
 
   const [value, setValue] = React.useState(5);
   const handleChange = (value) => setValue(value);
@@ -397,7 +396,9 @@ const Main = () => {
               <Text paddingRight={"20px"}>Name: Callum</Text>
               <Text paddingRight={"20px"}>Email: callumc11@gmail.com</Text>
               <Box padding={"10px 0px 0px 100px"}>
-                <Button textColor={"#282c34"}>Submit</Button>
+                <Button textColor={"#282c34"} onClick={() => registerRequest()}>
+                  Submit
+                </Button>
               </Box>
             </VStack>
           </Box>

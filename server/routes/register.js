@@ -22,11 +22,11 @@ const mail = async (content) => {
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+    from: '"Fred Foo 👻" <mail@simplygive.com>', // sender address
     to: "bar@example.com, baz@example.com", // list of receivers
-    subject: "Hello ✔", // Subject line
+    subject: "Your Subscription to Make The World a Better Place", // Subject line
     text: { content }, // plain text body
-    html: "<b>Hello world?</b>", // html body
+    html: `<b>${content}</b>`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);
@@ -34,7 +34,6 @@ const mail = async (content) => {
 
   // Preview only available when sending through an Ethereal account
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 };
 
 /**

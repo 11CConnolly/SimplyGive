@@ -32,10 +32,12 @@ import charity from "../charity.jpg";
 import {
   categories,
   categoriesToDisplayText,
+  colours,
   zIndexLevels,
 } from "../utils/constants";
 import Footer from "../components/Footer";
 import CharityButton from "../components/CharityButton";
+import PageSection from "../components/PageSection";
 
 const Main = () => {
   //@params  - Registration request
@@ -58,38 +60,35 @@ const Main = () => {
   return (
     <>
       <VStack className="page-container" spacing={0}>
-        {/* FIRST BOX */}
-        <Flex
-          className="landing-section background-charity"
-          w={"100%"}
+        {/* MAIN IMAGE BOX */}
+        <PageSection
+          className="background-charity"
           h="2xl"
           backgroundImage={charity}
           backgroundSize={"cover"}
         >
           <Box className="first-box-left">
-            <Heading size="2xl" textColor={"#FEFEEE"}>
+            <Heading size="2xl" textColor={colours.IVORY}>
               SimplyGive makes it easier to support the issues that are closest
               to your heart.
             </Heading>
             <br />
             <br />
-            <Text as={"b"} fontSize={"xl"} textColor={"#FEFEEE"}>
+            <Text as={"b"} fontSize={"xl"} textColor={colours.IVORY}>
               It's your one subscription to make the world a better place.
             </Text>
             <br />
-            <Text as={"b"} fontSize={"xl"} textColor={"#FEFEEE"}>
+            <Text as={"b"} fontSize={"xl"} textColor={colours.IVORY}>
               Learn more about how it works below.
             </Text>
           </Box>
           <Box className="first-box-right"></Box>
-        </Flex>
+        </PageSection>
 
-        {/* SECOND BOX */}
-        <Flex
-          className="landing-section"
+        {/* OVERVIEW CONTAINER BOX */}
+        <PageSection
           h="md"
-          width="100%"
-          backgroundColor={"#262729"}
+          backgroundColor={colours.NAVY}
           justifyContent={"center"}
           alignItems={"center"}
         >
@@ -97,7 +96,7 @@ const Main = () => {
             borderRadius="lg"
             h="lg"
             width="80%"
-            backgroundColor="#EFF0E1"
+            backgroundColor={colours.IVORY}
             zIndex={zIndexLevels.LEVEL_MED}
           >
             <Center>
@@ -106,7 +105,7 @@ const Main = () => {
               </Heading>
             </Center>
             <HStack
-              divider={<StackDivider borderColor="#F8586A" />}
+              divider={<StackDivider borderColor={colours.SIMPLYGIVEPINK} />}
               spacing={4}
               display={"flex"}
               align="start"
@@ -119,7 +118,7 @@ const Main = () => {
               <Box flexBasis={"25%"}>
                 <Stat>
                   <StatLabel>Categories of Charity</StatLabel>
-                  <StatNumber textColor={"#F8586A"}>8</StatNumber>
+                  <StatNumber textColor={colours.SIMPLYGIVEPINK}>8</StatNumber>
                   <StatHelpText>
                     Based on Feedback from 1000 of people
                   </StatHelpText>
@@ -128,21 +127,27 @@ const Main = () => {
               <Box flexBasis={"25%"}>
                 <Stat>
                   <StatLabel>Total Donations</StatLabel>
-                  <StatNumber textColor={"#F8586A"}>£1605.00</StatNumber>
+                  <StatNumber textColor={colours.SIMPLYGIVEPINK}>
+                    £1605.00
+                  </StatNumber>
                   <StatHelpText>Since we launched</StatHelpText>
                 </Stat>
               </Box>
               <Box flexBasis={"25%"}>
                 <Stat>
                   <StatLabel as={"b"}>Charities Helped</StatLabel>
-                  <StatNumber textColor={"#F8586A"}>120</StatNumber>
+                  <StatNumber textColor={colours.SIMPLYGIVEPINK}>
+                    120
+                  </StatNumber>
                   <StatHelpText>Across England and Wales</StatHelpText>
                 </Stat>
               </Box>
               <Box flexBasis={"25%"}>
                 <Stat>
                   <StatLabel>Average Donation</StatLabel>
-                  <StatNumber textColor={"#F8586A"}>£10.00</StatNumber>
+                  <StatNumber textColor={colours.SIMPLYGIVEPINK}>
+                    £10.00
+                  </StatNumber>
                   <StatHelpText>From over 100 givers</StatHelpText>
                 </Stat>
               </Box>
@@ -187,9 +192,9 @@ const Main = () => {
               </Center>
             </HStack>
           </Box>
-        </Flex>
+        </PageSection>
 
-        {/* THIRD BOX */}
+        {/* STEP 1 BOX */}
         <Flex h="xl" w={"100%"} className="landing-section">
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
@@ -217,15 +222,10 @@ const Main = () => {
           </Box>
         </Flex>
 
-        {/* FOURTH BOX */}
-        <Flex
-          h="sm"
-          w={"100%"}
-          className="landing-section"
-          backgroundColor={"#282c34"}
-        >
+        {/* STEP 2 BOX */}
+        <PageSection h="sm" backgroundColor={colours.NAVY}>
           <Box className="section-box-left">
-            <Heading size="4xl" textAlign={"center"} textColor={"ivory"}>
+            <Heading size="4xl" textAlign={"center"} textColor={colours.IVORY}>
               Step 2
             </Heading>
             <br></br>
@@ -234,7 +234,7 @@ const Main = () => {
               fontSize="2xl"
               as={"b"}
               textAlign={"center"}
-              textColor={"ivory"}
+              textColor={colours.IVORY}
             >
               Choose your Monthly Donation
             </Text>
@@ -247,12 +247,12 @@ const Main = () => {
                 min={5}
                 value={value}
                 onChange={handleChange}
-                textColor={"ivory"}
+                textColor={colours.IVORY}
               >
                 <NumberInputField />
                 <NumberInputStepper>
-                  <NumberIncrementStepper color={"ivory"} />
-                  <NumberDecrementStepper color={"ivory"} />
+                  <NumberIncrementStepper color={colours.IVORY} />
+                  <NumberDecrementStepper color={colours.IVORY} />
                 </NumberInputStepper>
               </NumberInput>
               <Slider
@@ -263,16 +263,16 @@ const Main = () => {
                 onChange={handleChange}
               >
                 <SliderTrack>
-                  <SliderFilledTrack bg="#F8586A" />
+                  <SliderFilledTrack bg={colours.SIMPLYGIVEPINK} />
                 </SliderTrack>
                 <SliderThumb boxSize="32px" />
               </Slider>
             </Center>
           </Box>
-        </Flex>
+        </PageSection>
 
-        {/* FIFTH BOX */}
-        <Flex h="sm" w={"100%"} className="landing-section">
+        {/* STEP 3 BOX */}
+        <PageSection h="sm">
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
               Step 3
@@ -289,15 +289,10 @@ const Main = () => {
               <Input placeholder="email" w="sm" variant={"outline"} />
             </VStack>
           </Box>
-        </Flex>
+        </PageSection>
 
-        <Flex
-          h="md"
-          w={"100%"}
-          className="landing-section"
-          backgroundColor={"#282c34"}
-          textColor={"ivory"}
-        >
+        {/* STEP 4 BOX */}
+        <PageSection h="md" backgroundColor={colours.NAVY} textColor={"ivory"}>
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
               Step 4
@@ -315,13 +310,16 @@ const Main = () => {
               <Text paddingRight={"20px"}>Name: Callum</Text>
               <Text paddingRight={"20px"}>Email: callumc11@gmail.com</Text>
               <Box padding={"10px 0px 0px 100px"}>
-                <Button textColor={"#282c34"} onClick={() => registerRequest()}>
+                <Button
+                  textColor={colours.NAVY}
+                  onClick={() => registerRequest()}
+                >
                   Submit
                 </Button>
               </Box>
             </VStack>
           </Box>
-        </Flex>
+        </PageSection>
       </VStack>
       <Footer />
     </>

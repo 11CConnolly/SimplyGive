@@ -29,10 +29,19 @@ const zIndexLevels = {
   LEVEL_ULTRA_HIGH: 100,
 };
 
+const colours = {
+  NAVY: "#282c34",
+  RICHBLACK: "#0a1119",
+  WHITESMOKE: "#f5f5f5",
+  IVORY: "#eff0e1",
+  SIMPLYGIVEPINK: "#f8586a",
+};
+
 module.exports = {
   categories,
   categoriesToDisplayText,
   formatAsGBP,
   parseAsGBP,
   zIndexLevels,
+  colours,
 };

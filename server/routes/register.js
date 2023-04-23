@@ -1,40 +1,10 @@
 const express = require("express");
-const User = require("../models/user");
 const mongoose = require("mongoose");
-
 const router = express.Router();
 const nodemailer = require("nodemailer");
 
-const mail = async (content) => {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  let testAccount = await nodemailer.createTestAccount();
-
-  // create reusable transporter object using the default SMTP transport
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-      user: "stefan.murray26@ethereal.email",
-      pass: "dY1myRauBaZnqc4TuQ",
-    },
-  });
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <mail@simplygive.com>', // sender address
-    to: "bar@example.com, baz@example.com", // list of receivers
-    subject: "Your Subscription to Make The World a Better Place", // Subject line
-    text: { content }, // plain text body
-    html: `<b>${content}</b>`, // html body
-  });
-
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-};
+const User = require("../models/user");
+const mail = require("../services/mail/mailer");
 
 /**
  * @method POST
@@ -49,10 +19,6 @@ router.post("/", async (req, res) => {
   // Subscription properties
   const { categories, amount } = req.body;
 
-  await mail([name, email, categories, amount].toString()).catch(console.error);
-
-  res.status(500);
-
   try {
     await new User({
       name,
@@ -60,12 +26,17 @@ router.post("/", async (req, res) => {
       subscription: { amount, categories, active: true },
     }).save();
 
-    console.log(email);
+    // TODO This should be in a separate service. If the email fails, I still want to acknowledge that the
+    // TODO sign up was successful on the FE.
 
     res.status(201).json({
       status: "Success",
       description: "Registration successful, subscription complete!",
     });
+
+    await mail([name, email, categories, amount].toString()).catch(
+      console.error
+    );
   } catch (err) {
     if (err instanceof mongoose.Error.ValidationError) {
       res.status(400).json({

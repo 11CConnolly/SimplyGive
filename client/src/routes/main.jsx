@@ -13,7 +13,6 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Input,
-  Image,
   Button,
   HStack,
   Stat,
@@ -29,9 +28,14 @@ import {
 import "../index.css";
 
 import client from "../utils/client";
-import { categories, zIndexLevels } from "../utils/constants";
 import charity from "../charity.jpg";
-import LogoSGmin from "../LogoSGmin.png";
+import {
+  categories,
+  categoriesToDisplayText,
+  zIndexLevels,
+} from "../utils/constants";
+import Footer from "../components/Footer";
+import CharityButton from "../components/CharityButton";
 
 const Main = () => {
   //@params  - Registration request
@@ -64,8 +68,8 @@ const Main = () => {
         >
           <Box className="first-box-left">
             <Heading size="2xl" textColor={"#FEFEEE"}>
-              SimplyGive makes it easier for to support the issues that are
-              closest to your heart.
+              SimplyGive makes it easier to support the issues that are closest
+              to your heart.
             </Heading>
             <br />
             <br />
@@ -81,11 +85,13 @@ const Main = () => {
         </Flex>
 
         {/* SECOND BOX */}
-        <Center
+        <Flex
           className="landing-section"
           h="md"
           width="100%"
           backgroundColor={"#262729"}
+          justifyContent={"center"}
+          alignItems={"center"}
         >
           <Box
             borderRadius="lg"
@@ -181,7 +187,7 @@ const Main = () => {
               </Center>
             </HStack>
           </Box>
-        </Center>
+        </Flex>
 
         {/* THIRD BOX */}
         <Flex h="xl" w={"100%"} className="landing-section">
@@ -204,94 +210,9 @@ const Main = () => {
               gap={6}
               className="grid"
             >
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                className="griddy"
-                height="100%"
-                bg="#F8586A"
-              >
-                <Text as={"b"} className="griddy-text">
-                  Healthcare
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                className="griddy"
-                bg="#F8586A"
-                h="100%"
-              >
-                <Text as={"b"} className="griddy-text">
-                  Animals
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                bg="#F8586A"
-                className="griddy"
-                h="100%"
-              >
-                <Text className="griddy-text" as={"b"}>
-                  Welfare
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                bg="#F8586A"
-                className="griddy"
-                h="100%"
-              >
-                <Text as={"b"} className="griddy-text">
-                  Culture
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                bg="#F8586A"
-                className="griddy"
-                h="100%"
-              >
-                <Text as={"b"} className="griddy-text">
-                  Crisis
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                bg="#F8586A"
-                className="griddy"
-                h="100%"
-              >
-                <Text as={"b"} className="griddy-text">
-                  Education
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                bg="#F8586A"
-                className="griddy"
-                h="100%"
-              >
-                <Text as={"b"} className="griddy-text">
-                  LGBTQ+
-                </Text>
-              </Button>
-              <Button
-                rowSpan={1}
-                colSpan={1}
-                bg="#F8586A"
-                className="griddy"
-                h="100%"
-              >
-                <Text as={"b"} className="griddy-text">
-                  Economic Development
-                </Text>
-              </Button>
+              {Object.values(categoriesToDisplayText).map((val) => (
+                <CharityButton key={val} text={val} />
+              ))}
             </Grid>
           </Box>
         </Flex>
@@ -364,10 +285,8 @@ const Main = () => {
           </Box>
           <Box className="section-box-right">
             <VStack paddingTop={"50px"}>
-              <Text paddingRight={"20px"}>Name</Text>
-              <Input w="xs" variant={"outline"} />
-              <Text paddingRight={"20px"}>Email</Text>
-              <Input w="sm" variant={"outline"} />
+              <Input placeholder="name" w="xs" variant={"outline"} />
+              <Input placeholder="email" w="sm" variant={"outline"} />
             </VStack>
           </Box>
         </Flex>
@@ -404,14 +323,7 @@ const Main = () => {
           </Box>
         </Flex>
       </VStack>
-      <Center className="footer" h={"100px"}>
-        <Box w={"200px"}>
-          <Image width="150px" src={LogoSGmin} alt="Simply Give Logo" />
-        </Box>
-        <Text color={"whitesmoke"}>
-          SimplyGive, Registered Charity: 89003883
-        </Text>
-      </Center>
+      <Footer />
     </>
   );
 };

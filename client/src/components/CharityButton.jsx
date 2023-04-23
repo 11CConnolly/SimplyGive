@@ -13,6 +13,7 @@ const CharityButton = (props) => {
       rowSpan={1}
       colSpan={1}
       h={"100%"}
+      {...props}
     >
       <Text className="griddy-text" as="b">
         {text}

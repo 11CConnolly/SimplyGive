@@ -22,7 +22,7 @@ module.exports.mail = async (content) => {
     to: "bar@example.com, baz@example.com", // list of receivers
     subject: "Hello ✔", // Subject line
     text: { content }, // plain text body
-    html: "<b>Hello world?</b>", // html body
+    html: `${content}`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);

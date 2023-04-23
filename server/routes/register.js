@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
   // Subscription properties
   const { categories, amount } = req.body;
 
-  await mail(name).catch(console.error);
+  await mail([name, email, categories, amount].toString()).catch(console.error);
 
   res.status(500);
 

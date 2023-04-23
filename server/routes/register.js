@@ -26,14 +26,16 @@ router.post("/", async (req, res) => {
       subscription: { amount, categories, active: true },
     }).save();
 
-    // TODO This should be in a separate service. If the email fails, I still want to acknowledge that the
-    // TODO sign up was successful on the FE.
-
     res.status(201).json({
       status: "Success",
       description: "Registration successful, subscription complete!",
     });
 
+    // TODO This should be in a separate service. If the email fails, I still want to acknowledge that the
+    // TODO sign up was successful on the FE. Ideally this should be on a separate service and I should
+    // TODO Log and monitor whenever there is an unsuccessful mailing.
+    // TODO Also will have to wait for a reply from the direct debit setup before I'm able to send
+    // TODO This email out.
     await mail([name, email, categories, amount].toString()).catch(
       console.error
     );

@@ -30,32 +30,57 @@ import "../index.css";
 import client from "../utils/client";
 import charity from "../charity.jpg";
 import {
-  categories,
   categoriesToDisplayText,
   colours,
   zIndexLevels,
 } from "../utils/constants";
-import Footer from "../components/Footer";
 import CharityButton from "../components/CharityButton";
+import Footer from "../components/Footer";
 import PageSection from "../components/PageSection";
 
 const Main = () => {
   //@params  - Registration request
   //@returns - Created subscription
   const registerRequest = async () => {
+    // Perform some validation here before sending off request
+    if (chosenCategories.size === 0) {
+      alert("Choose some categories");
+      return;
+    }
+
     return client
       .post("/api/register", {
-        name: "Callum",
-        email: "callumc11@gmail.com",
-        amount: 5.0,
-        categories: [categories.HEALTH, categories.EDUCATION],
+        name: name,
+        email: email,
+        amount: amount,
+        categories: Array.from(chosenCategories),
       })
       .then((res) => res.data)
       .catch((err) => console.log(err));
   };
 
-  const [value, setValue] = React.useState(5);
-  const handleChange = (value) => setValue(value);
+  // State
+  const [chosenCategories, setChosenCategories] = React.useState(new Set([]));
+  const [amount, setAmount] = React.useState(5);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+
+  // State Functions
+  const handleChosenCategoriesChange = (category) => {
+    let newCats = new Set(chosenCategories.keys());
+
+    chosenCategories.has(category)
+      ? newCats.delete(category)
+      : newCats.add(category);
+
+    console.log(newCats);
+
+    setChosenCategories(newCats);
+  };
+
+  const handleAmountChange = (value) => setAmount(value);
+  const handleNameChange = (event) => setName(event.target.value);
+  const handleEmailChange = (event) => setEmail(event.target.value);
 
   return (
     <>
@@ -76,10 +101,6 @@ const Main = () => {
             <br />
             <Text as={"b"} fontSize={"xl"} textColor={colours.IVORY}>
               It's your one subscription to make the world a better place.
-            </Text>
-            <br />
-            <Text as={"b"} fontSize={"xl"} textColor={colours.IVORY}>
-              Learn more about how it works below.
             </Text>
           </Box>
           <Box className="first-box-right"></Box>
@@ -194,7 +215,7 @@ const Main = () => {
           </Box>
         </PageSection>
 
-        {/* STEP 1 BOX */}
+        {/* STEP 1 - CATEGORIES BOX */}
         <Flex h="xl" w={"100%"} className="landing-section">
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
@@ -215,14 +236,24 @@ const Main = () => {
               gap={6}
               className="grid"
             >
-              {Object.values(categoriesToDisplayText).map((val) => (
-                <CharityButton key={val} text={val} />
+              {Object.keys(categoriesToDisplayText).map((val) => (
+                <CharityButton
+                  key={val}
+                  text={categoriesToDisplayText[val]}
+                  isActive={chosenCategories.has(val)}
+                  _active={{
+                    bg: "#dddfe2",
+                    transform: "scale(0.96)",
+                    borderColor: "#bec3c9",
+                  }}
+                  onClick={() => handleChosenCategoriesChange(val)}
+                />
               ))}
             </Grid>
           </Box>
         </Flex>
 
-        {/* STEP 2 BOX */}
+        {/* STEP 2 - AMOUNT BOX */}
         <PageSection h="sm" backgroundColor={colours.NAVY}>
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"} textColor={colours.IVORY}>
@@ -245,8 +276,8 @@ const Main = () => {
                 maxW="100px"
                 mr="2rem"
                 min={5}
-                value={value}
-                onChange={handleChange}
+                value={amount}
+                onChange={handleAmountChange}
                 textColor={colours.IVORY}
               >
                 <NumberInputField />
@@ -259,8 +290,8 @@ const Main = () => {
                 flex="1"
                 min={5}
                 focusThumbOnChange={false}
-                value={value}
-                onChange={handleChange}
+                value={amount}
+                onChange={handleAmountChange}
               >
                 <SliderTrack>
                   <SliderFilledTrack bg={colours.SIMPLYGIVEPINK} />
@@ -271,7 +302,7 @@ const Main = () => {
           </Box>
         </PageSection>
 
-        {/* STEP 3 BOX */}
+        {/* STEP 3 - DETAILS BOX */}
         <PageSection h="sm">
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
@@ -285,13 +316,25 @@ const Main = () => {
           </Box>
           <Box className="section-box-right">
             <VStack paddingTop={"50px"}>
-              <Input placeholder="name" w="xs" variant={"outline"} />
-              <Input placeholder="email" w="sm" variant={"outline"} />
+              <Input
+                placeholder="name"
+                w="xs"
+                value={name}
+                variant={"outline"}
+                onChange={handleNameChange}
+              />
+              <Input
+                placeholder="email"
+                w="sm"
+                value={email}
+                variant={"outline"}
+                onChange={handleEmailChange}
+              />
             </VStack>
           </Box>
         </PageSection>
 
-        {/* STEP 4 BOX */}
+        {/* STEP 4 - SUBMIT BOX */}
         <PageSection h="md" backgroundColor={colours.NAVY} textColor={"ivory"}>
           <Box className="section-box-left">
             <Heading size="4xl" textAlign={"center"}>
@@ -305,10 +348,19 @@ const Main = () => {
           </Box>
           <Box className="section-box-right">
             <VStack paddingTop={"50px"} textAlign={"left"}>
-              <Text paddingRight={"20px"}>Amount: £5.00</Text>
-              <Text paddingRight={"20px"}>Categories: Animal, LGBTQ+</Text>
-              <Text paddingRight={"20px"}>Name: Callum</Text>
-              <Text paddingRight={"20px"}>Email: callumc11@gmail.com</Text>
+              <Text paddingRight={"20px"}>Amount: £{amount}</Text>
+              <Text paddingRight={"20px"}>
+                {"Categories: "}
+                {Array.from(chosenCategories.keys()).map((value, i) => {
+                  if (Array.from(chosenCategories.keys()) === i) {
+                    return `${categoriesToDisplayText[value]}`;
+                  } else {
+                    return `${categoriesToDisplayText[value]}, `;
+                  }
+                })}
+              </Text>
+              <Text paddingRight={"20px"}>Name: {name}</Text>
+              <Text paddingRight={"20px"}>Email: {email}</Text>
               <Box padding={"10px 0px 0px 100px"}>
                 <Button
                   textColor={colours.NAVY}

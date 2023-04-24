@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
+const { MongoMemoryServer } = require("mongodb-memory-server");
+
+// Our instance of MongoDB Server if running with test and Mongo Memory Server
+let mongo = undefined;
+
+// Our DB String either live or mocked
+let db_string = undefined;
 
 const setupDBConnection = async () => {
-  // Our instance of MongoDB Server if running with test and Mongo Memory Server
-  let mongo = undefined;
-
-  // Our DB String either live or mocked
-  let db_string = undefined;
-
   // Our custom print function depending on setup
   let printFunc = undefined;
 

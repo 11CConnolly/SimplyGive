@@ -1,8 +1,6 @@
 const expect = require("chai").expect;
 const request = require("supertest");
-const mongoose = require("mongoose");
 const { CHARITIES_TEST_DATA, REGISTER_TEST_DATA } = require("./test_data");
-const { MongoMemoryServer } = require("mongodb-memory-server");
 
 // Import our app
 const app = require("../index");
@@ -13,33 +11,18 @@ const User = require("../models/user");
 
 // Import constants
 const { categories } = require("../models/categories");
-
-// Mock our DB connection
-let mongo = null;
-
-const connectDB = async () => {
-  mongo = await MongoMemoryServer.create();
-  const uri = mongo.getUri();
-
-  mongoose.set("strictQuery", true);
-
-  mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-};
+const { dropTestDB, setupDBConnection } = require("../config/db.config");
 
 describe("API Tests", function () {
   before(async function () {
-    await connectDB();
+    await setupDBConnection();
     await Charity.deleteMany({});
     await User.deleteMany({});
   });
 
   after(async function () {
     // Close down our connection to our mock DB
-    await mongoose.disconnect();
-    await mongo.stop();
+    await dropTestDB();
   });
 
   describe("Register User", function () {

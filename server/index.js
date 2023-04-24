@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
+const { setupDBConnection } = require("./config/db.config");
 
 const app = express();
 
@@ -23,19 +24,11 @@ app.disable("x-powered-by");
 /*
  * Database connection
  */
-const live_db_string =
-  "mongodb+srv://callum001:VgNxBSoA0dQFnA9K@cluster0.uffmeex.mongodb.net/?retryWrites=true&w=majority";
+const connectToDB = async () => {
+  await setupDBConnection();
+};
 
-mongoose.set("strictQuery", true);
-
-if (process.env.NODE_ENV !== "test") {
-  mongoose
-    .connect(live_db_string, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    .then(() => console.log("Connected to LIVE Database"));
-}
+connectToDB();
 
 /*
  * Define our API logic
@@ -59,6 +52,16 @@ app.use((err, req, res, next) => {
 
 // Connect to our post and open our application up to requests
 const PORT = process.env.PORT || 8080;
+
 module.exports = app.listen(PORT, () => {
   console.log(`Listening on PORT ${PORT}`);
 });
+// .close( async (err) => {
+//   console.log("Server closing");
+
+//   // Close down our DB Connections
+//   await mongoose.disconnect();
+
+//   // Exit with a status code
+//   process.exit(err ? 1 : 0);
+// });

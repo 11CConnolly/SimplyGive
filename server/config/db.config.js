@@ -27,7 +27,7 @@ const setupDBConnection = async () => {
     mongo = await MongoMemoryServer.create();
     db_string = mongo.getUri();
 
-    printFunc = "Connected to LIVE Database in DEVELOPMENT";
+    printFunc = "Connected to MOCK Database in TEST";
   }
 
   mongoose.set("strictQuery", true);

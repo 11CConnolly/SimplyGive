@@ -35,6 +35,8 @@ describe("API Tests", function () {
           email,
           subscription: { amount, categories, active: true },
         });
+
+        console.log("Created new user");
       });
 
       it("Should be able to register and setup a single Subscription", (done) => {

@@ -1,10 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = express.Router();
-const nodemailer = require("nodemailer");
-
-const User = require("../models/user");
-const mail = require("../services/mail/mailer");
+const registerController = require("../modules/registerController");
 
 /**
  * @method POST
@@ -12,52 +8,6 @@ const mail = require("../services/mail/mailer");
  * @endpoint /api/register/
  * @description Adds a new user with a setup subscription
  **/
-router.post("/", async (req, res) => {
-  // User properties
-  const { name, email } = req.body;
-
-  // Subscription properties
-  const { categories, amount } = req.body;
-
-  try {
-    await new User({
-      name,
-      email,
-      subscription: { amount, categories, active: true },
-    }).save();
-
-    res.status(201).json({
-      status: "Success",
-      description: "Registration successful, subscription complete!",
-    });
-
-    // TODO This should be in a separate service. If the email fails, I still want to acknowledge that the
-    // TODO sign up was successful on the FE. Ideally this should be on a separate service and I should
-    // TODO Log and monitor whenever there is an unsuccessful mailing.
-    // TODO Also will have to wait for a reply from the direct debit setup before I'm able to send
-    // TODO This email out.
-    await mail([name, email, categories, amount].toString()).catch(
-      console.error
-    );
-  } catch (err) {
-    if (err instanceof mongoose.Error.ValidationError) {
-      res.status(400).json({
-        description: "Invalid input, object invalid",
-        message: err,
-      });
-    } else if (err.code === 11000) {
-      // If error code is caused by duplicated key from MongoDB Schema Violation
-      res.status(422).json({
-        description: "Email already in use!",
-        message: err,
-      });
-    } else {
-      res.status(500).json({
-        status: "Failed",
-        message: err,
-      });
-    }
-  }
-});
+router.post("/", registerController.RegisterUser);
 
 module.exports = router;

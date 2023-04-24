@@ -1,7 +1,8 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
+const hpp = require("hpp");
+
 const { setupDBConnection } = require("./config/db.config");
 
 const app = express();
@@ -13,13 +14,25 @@ const app = express();
  * - http://expressjs.com/en/advanced/best-practice-performance.html
  */
 // Allows us to parse and send json requests
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 // Allows us to use cross-origin requests
 app.use(cors());
 // Preventing common security issues e.g. in HTTP headers
 app.use(helmet());
 // Preventing fingerprinting, increasing security posture.
 app.disable("x-powered-by");
+// protect against HTTP Parameter Pollution attacks
+app.use(hpp());
+
+// app.use(
+//   cookieSession({
+//     name: "session",
+//     keys: ["SECRECTKEY"],
+//     maxAge: 24 * 60 * 60 * 1000,
+//   })
+// );
+
+// app.use(cookieParser());
 
 /*
  * Database connection

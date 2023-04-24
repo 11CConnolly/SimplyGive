@@ -1,7 +1,13 @@
 "use strict";
 const nodemailer = require("nodemailer");
 
-const mail = async (content) => {
+const mailTemplates = {
+  SIGNUP: "SIGNUP",
+  DONATION: "DONATION",
+  UPDATE: "UPDATE",
+};
+
+const mail = async (template, content) => {
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
     host: "smtp.ethereal.email",
@@ -15,10 +21,10 @@ const mail = async (content) => {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Fred Foo 👻" <mail@simplygive.com>', // sender address
-    to: "bar@example.com, baz@example.com", // list of receivers
+    to: "callumc11@gmail.com", // list of receivers
     subject: "Your Subscription to Make The World a Better Place", // Subject line
     text: { content }, // plain text body
-    html: `<b>${processMessage()}</b>`, // html body
+    html: `<b>${processMessageToTemplate(template)}</b>`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);
@@ -29,8 +35,17 @@ const mail = async (content) => {
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 };
 
-function processMessage(content) {
-  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+// TODO Should get mail templates from DB
+function processMessageToTemplate(template, content) {
+  switch (template) {
+    case mailTemplates.SIGNUP:
+      return signupTemplate;
+    default:
+      break;
+  }
+}
+
+const signupTemplate = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" style="font-family:arial, 'helvetica neue', helvetica, sans-serif">
   <head>
   <meta charset="UTF-8">
@@ -209,6 +224,5 @@ function processMessage(content) {
   </div>
   </body>
   </html>`;
-}
 
-module.exports = mail;
+module.exports = { mail, mailTemplates };

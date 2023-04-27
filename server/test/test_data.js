@@ -26,6 +26,7 @@ const CreateMock_UserObject = () => {
     name: faker.name.firstName(),
     email: faker.internet.email(),
     subscription: {
+      mandateID: faker.lorem.word(),
       amount: faker.finance.amount(5, 1000, 0),
       categories: nRandomCategories(
         faker.datatype.number({

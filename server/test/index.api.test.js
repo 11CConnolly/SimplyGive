@@ -1,8 +1,9 @@
 const expect = require("chai").expect;
+const co = require("co");
 const request = require("supertest");
 const {
-  REGISTER_TEST_DATA,
   CreateMock_RegisterObject,
+  CreateMock_UserObject,
 } = require("./test_data");
 
 // Import our setup
@@ -13,18 +14,18 @@ const { dropTestDB, setupDBConnection } = require("../config/db.config");
 const Charity = require("../models/charitySchema");
 const User = require("../models/userSchema");
 
+before(async function () {
+  await setupDBConnection();
+  await User.deleteMany({});
+  await Charity.deleteMany({});
+});
+
+after(async function () {
+  // Close down our connection to our mock DB
+  await dropTestDB();
+});
+
 describe("API Tests", function () {
-  before(async function () {
-    await setupDBConnection();
-    await User.deleteMany({});
-    await Charity.deleteMany({});
-  });
-
-  after(async function () {
-    // Close down our connection to our mock DB
-    await dropTestDB();
-  });
-
   describe("api/register/user", function () {
     const existingRegisterObject = CreateMock_RegisterObject();
 
@@ -90,23 +91,33 @@ describe("API Tests", function () {
       });
     });
   });
+
+  describe("/api/subscriptions", function () {
+    const userOne = CreateMock_UserObject();
+    userOne.subscription.active = false;
+
+    describe("Receive Mandate to activate a subscription", function () {
+      before(async function () {
+        await User.create({
+          ...userOne,
+        });
+
+        console.log("Created new user");
+      });
+
+      it("Should be able to activate a subscription from a received mandate", (done) => {
+        request(app)
+          .post("/api/subscriptions/receiveMandate")
+          .send({ ...userOne.mandateID })
+          .expect(200)
+          .end(function (err, res) {
+            if (err) throw err;
+
+            expect(res.body.subscription.active).to.be.true;
+
+            done();
+          });
+      });
+    });
+  });
 });
-
-// describe("/api/subscriptions", function () {
-//   describe("Receive Mandate to activate a subscription"),
-//     function () {
-//       before(async function () {
-//         const { name, email, amount, categories } = REGISTER_TEST_DATA[1];
-
-//         await User.create({
-//           name,
-//           email,
-//           subscription: { amount, categories, active: true },
-//         });
-
-//         console.log("Created new user");
-//       });
-
-//       it("Should be able to activate a subscription from a received mandate");
-//     };
-// });

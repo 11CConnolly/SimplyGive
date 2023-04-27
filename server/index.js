@@ -51,6 +51,9 @@ connectToDB();
 const registerRoutes = require("./routes/register");
 app.use("/api/register", registerRoutes);
 
+const subscriptionRoutes = require("./routes/subscriptions");
+app.use("/api/subscriptions", subscriptionRoutes);
+
 /*
  * Custom error pages to reduce information leakage and enhance security posture
  */

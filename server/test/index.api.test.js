@@ -1,23 +1,23 @@
 const expect = require("chai").expect;
 const request = require("supertest");
-const { CHARITIES_TEST_DATA, REGISTER_TEST_DATA } = require("./test_data");
+const {
+  REGISTER_TEST_DATA,
+  CreateMock_RegisterObject,
+} = require("./test_data");
 
-// Import our app
+// Import our setup
 const app = require("../index");
+const { dropTestDB, setupDBConnection } = require("../config/db.config");
 
 // Import our schemas
-const Charity = require("../models/charity");
-const User = require("../models/user");
-
-// Import constants
-const { categories } = require("../models/categories");
-const { dropTestDB, setupDBConnection } = require("../config/db.config");
+const Charity = require("../models/charitySchema");
+const User = require("../models/userSchema");
 
 describe("API Tests", function () {
   before(async function () {
     await setupDBConnection();
-    await Charity.deleteMany({});
     await User.deleteMany({});
+    await Charity.deleteMany({});
   });
 
   after(async function () {
@@ -25,10 +25,12 @@ describe("API Tests", function () {
     await dropTestDB();
   });
 
-  describe("Register User", function () {
+  describe("api/register/user", function () {
+    const existingRegisterObject = CreateMock_RegisterObject();
+
     describe("Person attempting to create a new subscription", function () {
       before(async function () {
-        const { name, email, amount, categories } = REGISTER_TEST_DATA[1];
+        const { name, email, amount, categories } = existingRegisterObject;
 
         await User.create({
           name,
@@ -42,7 +44,7 @@ describe("API Tests", function () {
       it("Should be able to register and setup a single Subscription", (done) => {
         request(app)
           .post("/api/register")
-          .send({ ...REGISTER_TEST_DATA[0] })
+          .send(CreateMock_RegisterObject())
           .expect(201)
           .end(function (err, res) {
             if (err) throw err;
@@ -58,7 +60,7 @@ describe("API Tests", function () {
       it("Should reject the setup for a malformed subscription", (done) => {
         request(app)
           .post("/api/register")
-          .send({ ...REGISTER_TEST_DATA[0], name: null, email: null })
+          .send({ ...CreateMock_RegisterObject(), name: null, email: null })
           .expect(400)
           .end(function (err, res) {
             if (err) throw err;
@@ -74,7 +76,7 @@ describe("API Tests", function () {
       it("Should not let me register if the email already exists", (done) => {
         request(app)
           .post("/api/register")
-          .send({ ...REGISTER_TEST_DATA[1] })
+          .send({ ...existingRegisterObject })
           .expect(422)
           .end(function (err, res) {
             if (err) throw err;
@@ -89,3 +91,22 @@ describe("API Tests", function () {
     });
   });
 });
+
+// describe("/api/subscriptions", function () {
+//   describe("Receive Mandate to activate a subscription"),
+//     function () {
+//       before(async function () {
+//         const { name, email, amount, categories } = REGISTER_TEST_DATA[1];
+
+//         await User.create({
+//           name,
+//           email,
+//           subscription: { amount, categories, active: true },
+//         });
+
+//         console.log("Created new user");
+//       });
+
+//       it("Should be able to activate a subscription from a received mandate");
+//     };
+// });

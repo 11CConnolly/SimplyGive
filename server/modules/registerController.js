@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const User = require("../models/user");
+const User = require("../models/userSchema");
 const { mailTemplates, mail } = require("../services/mail/mailer");
 
 const registerController = {};
@@ -9,6 +9,8 @@ registerController.RegisterUser = async (req, res) => {
   try {
     const { name, email, categories, amount } = req.body;
 
+    // TODO When registering I'll have to get a value back to store in the subscription
+    // TODO To Keep track of GoCardless API Direct Debits
     await new User({
       name,
       email,

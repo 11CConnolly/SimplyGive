@@ -9,7 +9,7 @@ const charitySchema = new mongoose.Schema({
     unique: true,
   },
   charityNumber: {
-    type: Number,
+    type: String,
     required: true,
   },
   description: {
@@ -25,6 +25,10 @@ const charitySchema = new mongoose.Schema({
     type: String,
     default: TODAYS_DATE_IN_YYYY_MM_DD(),
     validate: { validator: (d) => validateDate(d) },
+  },
+  isInMonthlyPool: {
+    type: Boolean,
+    default: false,
   },
 });
 

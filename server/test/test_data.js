@@ -1,61 +1,69 @@
-const { categories } = require("../models/categories");
+const { faker } = require("@faker-js/faker");
+const {
+  categories,
+  categoriesArray,
+  nRandomCategories,
+} = require("../models/categories");
 
-const REGISTER_TEST_DATA = [
-  {
-    email: "callumc11@gmail.com",
-    name: "Callum",
-    categories: [categories.WELFARE, categories.CRISIS],
-    amount: 5.0,
-  },
-  {
-    email: "bob@example.com",
-    name: "Bob",
-    categories: [categories.WELFARE, categories.CRISIS],
-    amount: 20.0,
-  },
-  {
-    email: "jim@example.com",
-    name: "Jim",
-    categories: [categories.EDUCATION],
-    amount: 1.0,
-  },
-];
+// TODO These mocks now depends on the schema in a very fragile way
+const CreateMock_RegisterObject = () => {
+  return {
+    name: faker.name.firstName(),
+    email: faker.internet.email(),
+    amount: faker.finance.amount(5, 1000, 0),
+    categories: nRandomCategories(
+      faker.datatype.number({
+        min: 1,
+        max: categoriesArray.length,
+      })
+    ),
+  };
+};
 
-const CHARITIES_TEST_DATA = [
-  {
-    charityName: "BIAS",
-    charityNumber: 123456,
-    description: "Brent Irish Advisory Service",
-    categories: [categories.WELFARE],
-  },
-  {
-    charityName: "BIAS2",
-    charityNumber: 222222,
-    description: "Brent Irish Advisory Service 2",
-    categories: [categories.WELFARE],
-  },
-  {
-    charityName: "Mayhew",
-    charityNumber: 333333,
-    description: "Animal Home NW London",
-    categories: [categories.ANIMAL],
-  },
-  {
-    charityName: "Bob",
-    charityNumber: 691420,
-    description: "Bob",
-    categories: [
-      categories.ANIMAL,
-      categories.CRISIS,
-      categories.CULTURAL,
-      categories.WELFARE,
-      categories.HEALTH,
-      categories.EDUCATION,
-    ],
-  },
-];
+const CreateMock_UserObject = () => {
+  return {
+    id: faker.database.mongodbObjectId(),
+    name: faker.name.firstName(),
+    email: faker.internet.email(),
+    subscription: {
+      amount: faker.finance.amount(5, 1000, 0),
+      categories: nRandomCategories(
+        faker.datatype.number({
+          min: 1,
+          max: categoriesArray.length,
+        })
+      ),
+    },
+    donations: [],
+  };
+};
+
+const CreateMock_GoCardlessMandateObject = () => {
+  return {
+    mandateID: faker.lorem.word(),
+  };
+};
+
+const CreateMock_CharityObject = () => {
+  return {
+    charityName: faker.database.mongodbObjectId(),
+    charityNumber: faker.name.firstName(),
+    description: faker.internet.email(),
+    categories: nRandomCategories(
+      faker.datatype.number({
+        min: 1,
+        max: 4,
+      })
+    ),
+    recentNews: faker.lorem.slug(),
+    recentNewsUpdateDate: faker.date.soon(),
+    isInMonthlyPool: faker.datatype.boolean(),
+  };
+};
 
 module.exports = {
-  REGISTER_TEST_DATA,
-  CHARITIES_TEST_DATA,
+  CreateMock_RegisterObject,
+  CreateMock_UserObject,
+  CreateMock_GoCardlessMandateObject,
+  CreateMock_CharityObject,
 };

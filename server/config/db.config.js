@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 
@@ -9,25 +10,21 @@ let db_string = undefined;
 
 const setupDBConnection = async () => {
   // Our custom print function depending on setup
-  let printFunc = undefined;
+  let connection_log = undefined;
 
   if (process.env.NODE_ENV === "production") {
-    // Setup for production, connecting to LIVE DB
     db_string = process.env.LIVE_DB_STRING;
 
-    printFunc = "Connected to LIVE Database in PRODUCTION";
+    connection_log = "Connected to LIVE Database in PRODUCTION";
   } else if (process.env.NODE_ENV === "development") {
-    // Setup for development, connecting to LIVE DB
-    require("dotenv").config();
-
     db_string = process.env.LIVE_DB_STRING;
-    printFunc = "Connected to LIVE Database in DEVELOPMENT";
+
+    connection_log = "Connected to LIVE Database in DEVELOPMENT";
   } else if (process.env.NODE_ENV === "test") {
-    // Setup for testing, connecting to Memory DB
     mongo = await MongoMemoryServer.create();
     db_string = mongo.getUri();
 
-    printFunc = "Connected to MOCK Database in TEST";
+    connection_log = "Connected to MOCK Database in TEST";
   }
 
   mongoose.set("strictQuery", true);
@@ -37,7 +34,7 @@ const setupDBConnection = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    .then(() => console.log(printFunc));
+    .then(() => console.log(connection_log));
 };
 
 const dropTestDB = async () => {

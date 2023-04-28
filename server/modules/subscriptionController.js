@@ -10,14 +10,17 @@ subscriptionController.ReceiveMandate = async (req, res) => {
     // Find the particular user associated with that mandate
     const query = { "subscription.mandateID": id };
 
-    const user = await User.findOneAndUpdate({
+    await User.findOneAndUpdate(
       query,
-      "subscription.mandateID": true,
-    }).lean();
+      {
+        $set: {
+          "subscription.active": true,
+        },
+      },
+      { new: true }
+    );
 
-    res.status(200).json({
-      ...user,
-    });
+    res.status(200);
   } catch (err) {
     console.log(err);
   }

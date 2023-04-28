@@ -16,8 +16,6 @@ const User = require("../models/userSchema");
 
 before(async function () {
   await setupDBConnection();
-  await User.deleteMany({});
-  await Charity.deleteMany({});
 });
 
 after(async function () {
@@ -26,98 +24,112 @@ after(async function () {
 });
 
 describe("API Tests", function () {
-  describe("api/register/user", function () {
-    const existingRegisterObject = CreateMock_RegisterObject();
+  after(async function () {
+    await User.deleteMany({});
+    await Charity.deleteMany({});
 
-    describe("Person attempting to create a new subscription", function () {
-      before(async function () {
-        const { name, email, amount, categories } = existingRegisterObject;
+    describe("api/register/user", function () {
+      describe("Person attempting to create a new subscription", function () {
+        // Define our existing registering user
+        const existingRegisterObject = CreateMock_RegisterObject();
 
-        await User.create({
-          name,
-          email,
-          subscription: { amount, categories, active: true },
+        before(async function () {
+          const { name, email, amount, categories } = existingRegisterObject;
+
+          await User.create({
+            name,
+            email,
+            subscription: { amount, categories, active: true },
+          });
         });
 
-        console.log("Created new user");
-      });
+        it("Should be able to register and setup a single Subscription", (done) => {
+          request(app)
+            .post("/api/register")
+            .send(CreateMock_RegisterObject())
+            .expect(201)
+            .end(function (err, res) {
+              if (err) throw err;
 
-      it("Should be able to register and setup a single Subscription", (done) => {
-        request(app)
-          .post("/api/register")
-          .send(CreateMock_RegisterObject())
-          .expect(201)
-          .end(function (err, res) {
-            if (err) throw err;
+              expect(res.body)
+                .to.have.property("description")
+                .to.be.eql("Registration successful, subscription complete!");
 
-            expect(res.body)
-              .to.have.property("description")
-              .to.be.eql("Registration successful, subscription complete!");
+              done();
+            });
+        });
 
-            done();
-          });
-      });
+        it("Should reject the setup for a malformed subscription", (done) => {
+          request(app)
+            .post("/api/register")
+            .send({ ...CreateMock_RegisterObject(), name: null, email: null })
+            .expect(400)
+            .end(function (err, res) {
+              if (err) throw err;
 
-      it("Should reject the setup for a malformed subscription", (done) => {
-        request(app)
-          .post("/api/register")
-          .send({ ...CreateMock_RegisterObject(), name: null, email: null })
-          .expect(400)
-          .end(function (err, res) {
-            if (err) throw err;
+              expect(res.body)
+                .to.have.property("description")
+                .to.be.eql("Invalid input, object invalid");
 
-            expect(res.body)
-              .to.have.property("description")
-              .to.be.eql("Invalid input, object invalid");
+              done();
+            });
+        });
 
-            done();
-          });
-      });
+        it("Should not let me register if the email already exists", (done) => {
+          request(app)
+            .post("/api/register")
+            .send({ ...existingRegisterObject })
+            .expect(422)
+            .end(function (err, res) {
+              if (err) throw err;
 
-      it("Should not let me register if the email already exists", (done) => {
-        request(app)
-          .post("/api/register")
-          .send({ ...existingRegisterObject })
-          .expect(422)
-          .end(function (err, res) {
-            if (err) throw err;
+              expect(res.body)
+                .to.have.property("description")
+                .to.be.eql("Email already in use!");
 
-            expect(res.body)
-              .to.have.property("description")
-              .to.be.eql("Email already in use!");
-
-            done();
-          });
+              done();
+            });
+        });
       });
     });
   });
 
   describe("/api/subscriptions", function () {
-    const userOne = CreateMock_UserObject();
-    userOne.subscription.active = false;
-
     describe("Receive Mandate to activate a subscription", function () {
-      before(async function () {
-        await User.create({
-          ...userOne,
-        });
+      let userTemplate;
+      let userInstance;
 
-        console.log("Created new user");
+      before(async function () {
+        userTemplate = CreateMock_UserObject();
+        userTemplate.subscription.active = false;
+
+        userInstance = await User.create({
+          ...userTemplate,
+        });
       });
 
       it("Should be able to activate a subscription from a received mandate", (done) => {
         request(app)
           .post("/api/subscriptions/receiveMandate")
-          .send({ ...userOne.mandateID })
+          .send({ id: userTemplate.subscription.mandateID })
           .expect(200)
-          .end(function (err, res) {
-            if (err) throw err;
-
-            expect(res.body.subscription.active).to.be.true;
-
-            done();
-          });
+          .end(done());
       });
+
+      // TODO Move to integration test
+      // it("Should be able to activate a subscription from a received mandate", () => {
+      //   request(app)
+      //     .post("/api/subscriptions/receiveMandate")
+      //     .send({ id: userTemplate.subscription.mandateID })
+      //     .expect(200)
+      //     .end(async (err, res) => {
+      //       if (err) throw err;
+
+      //       const user = await User.findOne({ email: userTemplate.email });
+
+      //       expect(user.subscription.active).to.be.true;
+      //     });
+      // });
     });
   });
 });

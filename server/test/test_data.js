@@ -4,6 +4,7 @@ const {
   categoriesArray,
   nRandomCategories,
 } = require("../models/categories");
+const { ObjectId } = require("mongodb");
 
 // TODO These mocks now depends on the schema in a very fragile way
 const CreateMock_RegisterObject = () => {
@@ -22,7 +23,7 @@ const CreateMock_RegisterObject = () => {
 
 const CreateMock_UserObject = () => {
   return {
-    id: faker.database.mongodbObjectId(),
+    _id: faker.database.mongodbObjectId(),
     name: faker.name.firstName(),
     email: faker.internet.email(),
     subscription: {

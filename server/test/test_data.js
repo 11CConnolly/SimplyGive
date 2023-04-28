@@ -40,15 +40,26 @@ const CreateMock_UserObject = () => {
   };
 };
 
+const CreateMock_MandateID = () => {
+  return faker.lorem.word();
+};
+
 const CreateMock_GoCardlessMandateObject = () => {
   return {
-    mandateID: faker.lorem.word(),
+    id: faker.lorem.word(),
+  };
+};
+
+const CreateMock_GoCardlessDonationObject = () => {
+  return {
+    id: faker.lorem.word(),
+    amount: faker.finance.amount(5, 1000, 0),
   };
 };
 
 const CreateMock_CharityObject = () => {
   return {
-    charityName: faker.database.mongodbObjectId(),
+    charityName: faker.company.name(),
     charityNumber: faker.name.firstName(),
     description: faker.internet.email(),
     categories: nRandomCategories(
@@ -58,7 +69,7 @@ const CreateMock_CharityObject = () => {
       })
     ),
     recentNews: faker.lorem.slug(),
-    recentNewsUpdateDate: faker.date.soon(),
+    recentNewsUpdateDate: faker.date.soon().toISOString().split("T")[0],
     isInMonthlyPool: faker.datatype.boolean(),
   };
 };
@@ -68,4 +79,6 @@ module.exports = {
   CreateMock_UserObject,
   CreateMock_GoCardlessMandateObject,
   CreateMock_CharityObject,
+  CreateMock_MandateID,
+  CreateMock_GoCardlessDonationObject,
 };

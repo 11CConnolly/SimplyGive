@@ -17,6 +17,6 @@ router.post("/receiveMandate", subscriptionController.ReceiveMandate);
  * @description Receive a donation from GoCardless. Adds to a users donation after finding a
  *              charity in this months pool
  **/
-// router.post("/receiveDonation", subscriptionController.ReceiveDonation);
+router.post("/receiveDonation", subscriptionController.ReceiveDonation);
 
 module.exports = router;

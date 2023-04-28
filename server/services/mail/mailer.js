@@ -27,6 +27,8 @@ const mail = async (template, content) => {
     html: `<b>${processMessageToTemplate(template)}</b>`, // html body
   });
 
+  console.log(content);
+
   console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
@@ -40,10 +42,14 @@ function processMessageToTemplate(template, content) {
   switch (template) {
     case mailTemplates.SIGNUP:
       return signupTemplate;
+    case mailTemplates.DONATION:
+      return donationTemplate;
     default:
       break;
   }
 }
+
+const donationTemplate = `Thank you for your donation`;
 
 const signupTemplate = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" style="font-family:arial, 'helvetica neue', helvetica, sans-serif">

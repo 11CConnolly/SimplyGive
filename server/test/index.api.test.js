@@ -4,6 +4,9 @@ const request = require("supertest");
 const {
   CreateMock_RegisterObject,
   CreateMock_UserObject,
+  CreateMock_MandateID,
+  CreateMock_GoCardlessDonationObject,
+  CreateMock_CharityObject,
 } = require("./test_data");
 
 // Import our setup
@@ -16,6 +19,15 @@ const User = require("../models/userSchema");
 
 before(async function () {
   await setupDBConnection();
+
+  // populate our database with a list of charities
+  const charities = [];
+
+  for (let i = 0; i < 20; i++) {
+    charities.push(CreateMock_CharityObject());
+  }
+
+  await Charity.insertMany(charities);
 });
 
 after(async function () {
@@ -26,7 +38,6 @@ after(async function () {
 describe("API Tests", function () {
   after(async function () {
     await User.deleteMany({});
-    await Charity.deleteMany({});
 
     describe("api/register/user", function () {
       describe("Person attempting to create a new subscription", function () {
@@ -97,11 +108,21 @@ describe("API Tests", function () {
   describe("/api/subscriptions", function () {
     describe("Receive Mandate to activate a subscription", function () {
       let userTemplate;
-      let userInstance;
+      let mockMandateID;
+      let mockDonationObject;
+      // let userInstance;
 
       before(async function () {
         userTemplate = CreateMock_UserObject();
+        mockMandateID = CreateMock_MandateID();
+
+        // I only need these for the integration tests to confirm it's working
+        mockDonationObject = CreateMock_GoCardlessDonationObject();
+
+        // Setting identical mandate IDs
         userTemplate.subscription.active = false;
+        userTemplate.subscription.mandateID = mockMandateID;
+        mockDonationObject.id = mockMandateID;
 
         userInstance = await User.create({
           ...userTemplate,
@@ -111,7 +132,15 @@ describe("API Tests", function () {
       it("Should be able to activate a subscription from a received mandate", (done) => {
         request(app)
           .post("/api/subscriptions/receiveMandate")
-          .send({ id: userTemplate.subscription.mandateID })
+          .send({ id: mockMandateID })
+          .expect(200)
+          .end(done());
+      });
+
+      it("Should be able to add a donation to a particular subscription", (done) => {
+        request(app)
+          .post("/api/subscriptions/receiveDonation")
+          .send(mockDonationObject)
           .expect(200)
           .end(done());
       });

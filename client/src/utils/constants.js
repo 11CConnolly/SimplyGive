@@ -30,11 +30,14 @@ const zIndexLevels = {
 };
 
 const colours = {
-  NAVY: "#282c34",
-  RICHBLACK: "#0a1119",
-  WHITESMOKE: "#f5f5f5",
-  IVORY: "#eff0e1",
-  SIMPLYGIVEPINK: "#f8586a",
+  WHITE: "#FFF8F4",
+  LIGHTPEACH: "#FFC8A2",
+  PEACH: "#FFB380",
+  ORANGENEW: "#FF9245",
+  ORANGE: "#FF822B",
+  ORANGEDARK: "#D66B24",
+  REDDARK: "#A9551D",
+  BROWN: "#643211",
 };
 
 module.exports = {

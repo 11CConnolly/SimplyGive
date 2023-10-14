@@ -55,10 +55,10 @@ body {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   align-items: center;
-  background-color: #282c34;
   display: flex;
   text-align: center;
   justify-content: space-evenly;
+  height: 7rem;
 }
 
 .nav-image {

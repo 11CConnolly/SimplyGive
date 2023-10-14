@@ -2,20 +2,18 @@ import { Box, Button, Image } from "@chakra-ui/react";
 import { Outlet, Link } from "react-router-dom";
 
 import LogoSGmin from "../LogoSGmin.png";
+import { colours } from "../utils/constants";
 
 const Root = () => {
   return (
     <>
-      <Box className="navbar">
+      <Box className="navbar" backgroundColor={colours.PEACH}>
         <Box className="nav-image">
-          <Image width="200px" src={LogoSGmin} alt="Simply Give Logo" />
+          <Link to={`/`}>
+            <Image width="200px" src={LogoSGmin} alt="Simply Give Logo" />
+          </Link>
         </Box>
         <Box className="nav-buttons">
-          <Link to={`/`}>
-            <Button className="root-button" colorScheme="teal" variant="ghost">
-              Home
-            </Button>
-          </Link>
           <Link to={`charity-portal`}>
             <Button className="root-button" colorScheme="teal" variant="ghost">
               Charities

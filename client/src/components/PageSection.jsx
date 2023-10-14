@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex } from "@chakra-ui/react";
+import { colours } from "../utils/constants";
 
 const PageSection = ({ children, ...props }) => {
   return (

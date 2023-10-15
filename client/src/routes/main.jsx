@@ -14,6 +14,10 @@ import {
   SliderThumb,
   Input,
   Button,
+  SimpleGrid,
+  CardHeader,
+  CardBody,
+  CardFooter,
   HStack,
   Stat,
   StatLabel,
@@ -24,6 +28,8 @@ import {
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Stack,
+  Card,
 } from "@chakra-ui/react";
 import "../index.css";
 
@@ -37,6 +43,7 @@ import {
 import CharityButton from "../components/CharityButton";
 import Footer from "../components/Footer";
 import PageSection from "../components/PageSection";
+import CauseComponent from "../components/CauseComponent";
 
 const Main = () => {
   //@params  - Registration request
@@ -123,7 +130,44 @@ const Main = () => {
         {"======================="}
         {"HOW WE WORK SECTION"}
         {"======================="}
-        <PageSection h="xl" backgroundColor={colours.WHITE}></PageSection>
+        <PageSection h="xl" backgroundColor={colours.WHITE}>
+          <Flex
+            h={"70%"}
+            w={"90%"}
+            backgroundColor={colours.PEACH}
+            marginLeft={"auto"}
+            marginRight={"auto"}
+            marginTop={"7rem"}
+            flexDirection={"column"}
+          >
+            <Flex
+              h={"20%"}
+              backgroundColor={colours.ORANGENEW}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Text textColor={colours.WHITE}>How We Work</Text>
+            </Flex>
+            <Flex h={"80%"} backgroundColor={colours.ORANGEDARK}>
+              <CauseComponent
+                textHeading={"Pick a Cause"}
+                textBody={"Your donation will go to a chosen charity"}
+              />
+              <CauseComponent
+                textHeading={"Automatic"}
+                textBody={
+                  "Each month different charities from the category chosen will receive your donation."
+                }
+              />
+              <CauseComponent
+                textHeading={"Transparency"}
+                textBody={
+                  "For each donation you will receive an email with everything detailed."
+                }
+              />
+            </Flex>
+          </Flex>
+        </PageSection>
 
         {"======================="}
         {"DONATION COMPONENT CONTAINER"}
@@ -133,17 +177,186 @@ const Main = () => {
         {"======================="}
         {"QUICK ANSWERS"}
         {"======================="}
-        <PageSection h="2xl" backgroundColor={colours.WHITE}></PageSection>
+        <PageSection h="2xl" backgroundColor={colours.WHITE}>
+          <Flex
+            h={"80%"}
+            w={"90%"}
+            backgroundColor={colours.PEACH}
+            margin={"auto"}
+          >
+            <Flex
+              w={"40%"}
+              h={"100%"}
+              marrgin={"1rem"}
+              backgroundColor={colours.ORANGENEW}
+            >
+              <Text margin={"1rem"} fontSize={"6xl"}>
+                Quick Answers
+              </Text>
+            </Flex>
+            <Flex w={"60%"} h={"100%"} backgroundColor={colours.REDDARK}>
+              <Stack spacing={10} margin={"1rem"} marginTop={"2rem"}>
+                <Box>
+                  <Text>How do I Pick a Charity?</Text>
+                  <Text>
+                    You do not choose a charity, you pick a cause that groups
+                    several charities. Each month a different charity will
+                    receive your donation.
+                  </Text>
+                </Box>
+
+                <Box>
+                  <Text>How do I know which charity received my donation?</Text>
+                  <Text>
+                    You do not choose a charity, you pick a cause that groups
+                    several charities. Each month a different charity will
+                    receive your donation.
+                  </Text>
+                </Box>
+
+                <Box>
+                  <Text>Can I track my donation?</Text>
+                  <Text>
+                    You do not choose a charity, you pick a cause that groups
+                    several charities.
+                  </Text>
+                </Box>
+
+                <Box>
+                  <Text>Can I track my donation?</Text>
+                  <Text>
+                    You do not choose a charity, you pick a cause that groups
+                    several charities.
+                  </Text>
+                </Box>
+              </Stack>
+            </Flex>
+          </Flex>
+        </PageSection>
 
         {"======================="}
         {"CTA"}
         {"======================="}
-        <PageSection h="md" backgroundColor={colours.ORANGE}></PageSection>
+        <PageSection h="sm" backgroundColor={colours.ORANGE}>
+          <Flex
+            h={"80%"}
+            w={"90%"}
+            backgroundColor={colours.PEACH}
+            margin={"auto"}
+            flexDirection={"column"}
+          >
+            <Flex
+              h={"60%"}
+              w={"100%"}
+              backgroundColor={colours.ORANGEDARK}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Text fontSize={"4xl"} textColor={colours.WHITE}>
+                CTA To Catch Attention
+              </Text>
+            </Flex>
+            <Flex
+              h={"40%"}
+              w={"100%"}
+              backgroundColor={colours.ORANGEDARK}
+              justifyContent={"center"}
+              alignItems={"center"}
+            >
+              <Button
+                backgroundColor={colours.REDDARK}
+                textColor={colours.WHITE}
+              >
+                Contact Us
+              </Button>
+            </Flex>
+          </Flex>
+        </PageSection>
 
         {"======================="}
         {"CHARITIES WE WORK WITH"}
         {"======================="}
-        <PageSection h="lg" backgroundColor={colours.WHITE}></PageSection>
+        <PageSection h="lg" backgroundColor={colours.WHITE}>
+          <Flex
+            h={"80%"}
+            w={"90%"}
+            backgroundColor={colours.PEACH}
+            margin={"auto"}
+          >
+            <VStack
+              w={"35%"}
+              backgroundColor={colours.WHITE}
+              border={"2px dotted black"}
+            >
+              <Text textColor={colours.ORANGE} fontSize={"5xl"}>
+                Charities we work with
+              </Text>
+              <Text>
+                Lorem ipsum bacon Lorem ipsum bacon Lorem ipsum bacon Lorem
+                ipsum bacon Lorem ipsum bacon
+              </Text>
+            </VStack>
+            <VStack
+              w={"65%"}
+              backgroundColor={colours.WHITE}
+              border={"2px dotted black"}
+            >
+              <Flex h={"50%"} w={"100%"} border={"2px solid black"}>
+                <Box
+                  margin={"1rem"}
+                  h={"50%%"}
+                  w={"30%"}
+                  backgroundColor={colours.ORANGEDARK}
+                >
+                  Picture
+                </Box>
+                <Box
+                  margin={"1rem"}
+                  h={"50%%"}
+                  w={"30%"}
+                  backgroundColor={colours.ORANGEDARK}
+                >
+                  Picture
+                </Box>
+                <Box
+                  margin={"1rem"}
+                  h={"50%%"}
+                  w={"30%"}
+                  backgroundColor={colours.ORANGEDARK}
+                >
+                  Picture
+                </Box>
+              </Flex>
+
+              <Flex h={"50%"} w={"100%"} border={"2px solid black"}>
+                <Box
+                  margin={"1rem"}
+                  h={"50%%"}
+                  w={"30%"}
+                  backgroundColor={colours.ORANGEDARK}
+                >
+                  Picture
+                </Box>
+                <Box
+                  margin={"1rem"}
+                  h={"50%%"}
+                  w={"30%"}
+                  backgroundColor={colours.ORANGEDARK}
+                >
+                  Picture
+                </Box>
+                <Box
+                  margin={"1rem"}
+                  h={"50%%"}
+                  w={"30%"}
+                  backgroundColor={colours.ORANGEDARK}
+                >
+                  Picture
+                </Box>
+              </Flex>
+            </VStack>
+          </Flex>
+        </PageSection>
 
         {"======================="}
         {"FOOTER"}
